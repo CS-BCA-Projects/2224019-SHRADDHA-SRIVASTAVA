@@ -1,0 +1,253 @@
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: url('https://images.unsplash.com/photo-1517008729672-a63ddcf53acb?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .dashboard-container {
+        display: flex;
+        height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: #2c3e50;
+        padding: 20px;
+        height: 100vh;
+        color: white;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar ul li {
+        padding: 15px;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidebar ul li:hover {
+        background: #34495e;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .header h1 {
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .card {
+        width: 200px;
+        height: 200px;
+        perspective: 1000px;
+        position: relative;
+    }
+
+    .card .front, .card .back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.6s;
+    }
+
+    .card .front {
+        background: linear-gradient(135deg, #6e45e2, #88d3ce);
+        color: white;
+    }
+
+    .card .back {
+        background: white;
+        color: #333;
+        transform: rotateY(180deg);
+        text-align: center;
+        padding: 20px;
+    }
+
+    .card:hover .front {
+        transform: rotateY(180deg);
+    }
+
+    .card:hover .back {
+        transform: rotateY(360deg);
+    }
+
+    /* Recommended Pad Section */
+    .pad-recommendation {
+        margin-top: 40px;
+        text-align: center;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .pad-recommendation h2 {
+        font-size: 22px;
+        color: #333;
+    }
+
+    .pad-recommendation p {
+        font-size: 18px;
+        color: #555;
+        margin-top: 10px;
+    }
+
+    /* Fade In Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="dashboard-container">
+    
+    <!-- Sidebar Navigation -->
+    
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Welcome, {{user.name }}!</h1>
+            <p>Your personalized dashboard</p>
+        </div>
+
+        <!-- Animated User Info Cards -->
+        <div class="card-container">
+            <div class="card">
+                <div class="front">
+                    <h3>Phone</h3>
+                    <p>Your given phone no.</p>
+                </div>
+                <div class="back">
+                    <p>{{ user.phone }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="front">
+                    <h3>Menstrual Duration</h3>
+                    <p>"Recognizing the duration, as a time of inner power, not of weakness."</p>
+                </div>
+                <div class="back">
+                    <p>{{ user.menstruation_duration }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="front">
+                    <h3>Itchiness</h3>
+                    <p>this would help</p>
+                </div>
+                <div class="back">
+                    <p>{{ user.itchiness }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="front">
+                    <h3>Skin Type</h3>
+                    <p>Your skin type</p>
+                </div>
+                <div class="back">
+                    <p>{{ user.skin_type }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommended Pad Section -->
+        <div class="pad-recommendation">
+            <h2>Recommended Sanitary Pad</h2>
+            <p>{{ recommended_pad }}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Flip animation for cards
+        const cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            card.addEventListener("mouseenter", function () {
+                card.classList.add("hovered");
+            });
+
+            card.addEventListener("mouseleave", function () {
+                card.classList.remove("hovered");
+            });
+        });
+
+        // Generic Pad Recommendation Logic
+        const flow = "{{ user.flow }}".toLowerCase();
+        const skinType = "{{ user.skin_type }}".toLowerCase();
+        let padRecommendation = "A standard cotton-based pad with good absorption.";
+
+        if (flow.includes("heavy")) {
+            padRecommendation = "A long, overnight pad with maximum absorbency.";
+        } else if (flow.includes("light")) {
+            padRecommendation = "A slim, breathable pad for light flow days.";
+        }
+
+        if (skinType.includes("sensitive")) {
+            padRecommendation += " Opt for a pad with organic, fragrance-free material.";
+        } else if (skinType.includes("oily")) {
+            padRecommendation += " A dry-feel pad with breathable layers is ideal.";
+        }
+
+        document.getElementById("suitable_pad").textContent = padRecommendation;
+    });
+</script>
+<a href="{% url 'logout' %}"><button>Logout</button></a>
+
+
+
+
+

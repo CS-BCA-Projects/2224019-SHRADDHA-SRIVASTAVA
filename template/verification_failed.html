@@ -1,0 +1,18 @@
+<!-- accounts/templates/verification_failed.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Failed</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Optional: Link to your CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Verification Failed</h1>
+        <p>The verification link you used is invalid or has expired. Please try again.</p>
+        <a href="{% url 'register' %}">Register Again</a>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+</body>
+</html>
