@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Chatbot</title>
+    <style>
+        body {
+            background-color: #ffe6e6;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 1100px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .chat-box {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .user-message {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 5px 0;
+            width: fit-content;
+        }
+        .bot-message {
+            background: #e0e0e0;
+            color: black;
+            padding: 10px;
+            border-radius: 10px;
+            display: block;
+            margin: 10px 0;
+            width: fit-content;
+            max-width: 80%;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .bot-sticker {
+            width: 60px;
+            height: 60px;
+            display: block;
+            background-image: url('https://cdn-icons-png.flaticon.com/128/1921/1921064.png'); /* Replace with a sticker URL */
+            background-size: cover;
+            background-position: center;
+            margin: 5px 0;
+        }
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding-top: 10px;
+        }
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #b22222;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background: #a02020;
+        }
+    </style>
+    <script>
+        function getCSRFToken() {
+            return document.querySelector("[name=csrfmiddlewaretoken]").value;
+        }
+
+        function sendMessage() {
+            var userMessage = document.getElementById("user-input").value;
+            if (!userMessage.trim()) {
+                alert("Please enter a message!");
+                return;
+            }
+
+            var chatBox = document.getElementById("chat-box");
+
+            // Display user message on a new line
+            var userMsgElement = document.createElement("p");
+            userMsgElement.classList.add("user-message");
+            userMsgElement.innerText = userMessage;
+            chatBox.appendChild(userMsgElement);
+
+            // Display bot sticker
+            var botSticker = document.createElement("div");
+            botSticker.classList.add("bot-sticker");
+            chatBox.appendChild(botSticker);
+
+            fetch("/chatbot/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": getCSRFToken(),
+                },
+                body: "message=" + encodeURIComponent(userMessage),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display bot response as a list
+                var botMsgElement = document.createElement("div");
+                botMsgElement.classList.add("bot-message");
+                
+                var responseList = "<ul>";
+                data.response.split("*").forEach(item => {
+                    if (item.trim() !== "") {
+                        responseList += `<li>${item.trim()}</li>`;
+                    }
+                });
+                responseList += "</ul>";
+
+                botMsgElement.innerHTML = responseList;
+                chatBox.appendChild(botMsgElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => console.error("Error:", error));
+
+            document.getElementById("user-input").value = "";
+        }
+    </script>
+</head>
+<body>
+    <h2 style="color: #b22222;">Medical Chatbot</h2>
+    <div class="chat-container">
+        <div id="chat-box" class="chat-box"></div>
+        <form method="post" action="/chatbot/">
+            {% csrf_token %}
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Ask me anything about health...">
+                <button type="button" onclick="sendMessage()">Send</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    
+</head>
+<body>
+<style>
+
+    /* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Chatbot Container */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
+    background: #f8f9fa;
+}
+
+/* Chat Header */
+.chat-header {
+    background: #d63384;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Chat Box */
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 80vh;
+}
+
+/* Chat Messages */
+.bot-message, .user-message {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background: #e9ecef;
+}
+
+.user-message {
+    align-self: flex-end;
+    background: #d63384;
+    color: white;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #ccc;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px;
+    border: none;
+    background: #d63384;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-input button:hover {
+    background: #b0256d;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .bot-message, .user-message {
+        max-width: 80%;
+    }
+}
+</style>
+
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>Medical AI Chatbot</h2>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="bot-message">👩‍⚕️ Hello! I am here to help with your health queries.</div>
+    </div>
+
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+    let userInput = document.getElementById("userInput");
+    let chatBox = document.getElementById("chatBox");
+
+    let userText = userInput.value.trim();
+    if (userText === "") return;
+
+    // Add user message
+    let userMessage = document.createElement("div");
+    userMessage.classList.add("user-message");
+    userMessage.textContent = userText;
+    chatBox.appendChild(userMessage);
+
+    // Scroll to the bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Clear input
+    userInput.value = "";
+
+    // Simulate AI response
+    setTimeout(() => {
+        let botMessage = document.createElement("div");
+        botMessage.classList.add("bot-message");
+        botMessage.textContent = getBotResponse(userText);
+        chatBox.appendChild(botMessage);
+
+        // Scroll again
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 1000);
+}
+
+// Function to handle enter key press
+function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
+// Sample AI chatbot logic
+function getBotResponse(userText) {
+    userText = userText.toLowerCase();
+    
+    if (userText.includes("precautions")) {
+        return "✔️ Stay hydrated, maintain hygiene, and follow a balanced diet.";
+    } else if (userText.includes("ayurvedic medicine")) {
+        return "🌿 You can try Ashoka, Shatavari, or Aloe Vera for menstrual health.";
+    } else if (userText.includes("symptoms")) {
+        return "🔍 Common symptoms include cramps, bloating, mood swings, and fatigue.";
+    } else if (userText.includes("effects")) {
+        return "⚠️ Effects can include hormonal changes, weakness, and irregular cycles.";
+    } else {
+        return "🤔 I am still learning. Please ask about precautions, Ayurvedic medicine, symptoms, or effects.";
+    }
+}
+
+</script>
+
+</body>
+</html> {% endcomment %}

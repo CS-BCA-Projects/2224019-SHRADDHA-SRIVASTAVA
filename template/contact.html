@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact{% endblock title %}
+
+{% block body %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        color: #333;
+    }
+    .header {
+        background: #e91e63;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 24px;
+    }
+    .contact-container {
+        max-width: 500px;
+        margin: 50px auto;
+        margin-top: 100px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    h2 {
+        color: #ff758c;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    input, textarea {
+        width: 95%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background: #ff758c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #ff5e78;
+    }
+</style>
+
+<div class="header">Welcome to Your Personalized Sanitary Pad Guide</div>
+
+<div class="contact-container">
+    <h2>Contact Us</h2>
+    <p>We would love to hear from you! Please fill out this form and we will get in touch with you shortly.</p>
+    
+    <!-- ✅ Fix: Add action and method to the form -->
+    <form id="contactForm" action="{% url 'contact' %}" method="POST">
+        {% csrf_token %}  <!-- ✅ Fix: Add CSRF token -->
+
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <label for="desc">Message</label>
+        <textarea id="desc" name="desc" rows="5" required></textarea>
+        
+        <button type="submit">Send Message</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        alert("Your message has been sent!");  // ✅ Optional: Add success alert
+    });
+</script>
+
+{% endblock body %}
+
+
+{% comment %} {% extends 'base.html' %}
+
+{% block title %}Contact{% endblock title %}
+
+{% block body %}
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        color: #333;
+    }
+    .header {
+        background: #e91e63;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 24px;
+    }
+    .contact-container {
+        max-width: 500px;
+        margin: 50px auto;
+        margin-top: 100px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    h2 {
+        color: #ff758c;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    input, textarea {
+        width: 95%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background: #ff758c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #ff5e78;
+    }
+</style>
+</head>
+<body>
+    <div class="header">Welcome to Your Personalized Sanitary Pad Guide</div>
+<div class="contact-container">
+    <h2>Contact Us</h2>
+    <p>We would love to hear from you! Please fill out this form and we will get in touch with you shortly.</p>
+    
+    <form id="contactForm">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        
+        <button type="submit">Send Message</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('contactForm').reset();
+    });
+</script>
+{% endblock body %} {% endcomment %}

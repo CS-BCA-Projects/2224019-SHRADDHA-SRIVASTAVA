@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        
+<title> {% block title %}{% endblock title %} Shraddha </title>  
+
+
+   
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .open-btn {
+        font-size: 18px;
+        padding: 10px 15px;
+        background-color:transparent;
+        color: black;
+        border: none;
+        cursor: pointer;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        display: flex;
+    }
+    
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #e91e63;
+        overflow-x: hidden;
+        transition: 0.3s;
+        padding-top: 60px;
+    }
+    
+    .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        display: block;
+        transition: 0.2s;
+    }
+    
+    .sidebar a:hover {
+        background-color: #575757;
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+
+    <button class="open-btn" onclick="openSidebar()">☰</button>
+    
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="closeSidebar()">×</button>
+        <a href="/index/">About</a>
+        <a href="{% url 'register' %}">Registration</a>
+        <a href="{% url 'contact' %}">Contact</a>
+    </div>
+
+    
+
+    
+
+
+
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+
+{% block body %}{% endblock body %}
+</body>
+<script>
+    function openSidebar() {
+        document.getElementById("sidebar").style.width = "250px";
+    }
+    
+    function closeSidebar() {
+        document.getElementById("sidebar").style.width = "0";
+    }
+</script>
+</html>
