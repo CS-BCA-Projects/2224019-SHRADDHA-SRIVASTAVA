@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import check_password
 # db = settings.db
 
 class User:
-    collection = settings.MONGO_COLLECTIONS["users"] # MongoDB collection
+    collection = settings.MONGO_COLLECTIONS["user"] # MongoDB collection
 
     @staticmethod
     def register_user(data):
