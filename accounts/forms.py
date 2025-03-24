@@ -6,7 +6,7 @@ class RegistrationForm(forms.Form):
     age = forms.IntegerField(required=True)
     menstruation_duration = forms.IntegerField(required=True)
     menstrual_flow = forms.ChoiceField(choices=[("Light", "Light"), ("Heavy", "Heavy"), ("Moderate", "Moderate")], required=True)
-    skin_type = forms.ChoiceField(choices=[("Dry", "Dry"), ("Oily", "Oily"), ("Normal", "Normal")], required=True)
+    skin_type = forms.ChoiceField(choices=[("Dry", "Dry"), ("Oily", "Oily"), ("Normal", "Normal"), ("Sensitive", "Sensitive"), ("Combination", "Combination")], required=True)
     itchiness = forms.ChoiceField(choices=[("Yes", "Yes"), ("No", "No")], required=True)
     password = forms.CharField(
         widget=forms.PasswordInput(),  # Masks the input

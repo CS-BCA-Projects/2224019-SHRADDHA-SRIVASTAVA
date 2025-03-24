@@ -1,162 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1517008729672-a63ddcf53acb?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            padding: 20px;
+            height: 100vh;
+            color: white;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background: #34495e;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 100px;
+            align: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            width: 200px;
+            height: 200px;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .card .front, .card .back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.6s;
+        }
+
+        .card .front {
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            color: white;
+        }
+
+        .card .back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card:hover .front {
+            transform: rotateY(180deg);
+        }
+
+        .card:hover .back {
+            transform: rotateY(360deg);
+        }
+
+        /* Recommended Pad Section */
+        .pad-recommendation {
+            margin-top: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .pad-recommendation h2 {
+            font-size: 22px;
+            color: #333;
+        }
+
+        .pad-recommendation p {
+            font-size: 18px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
 
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-        background: url('https://images.unsplash.com/photo-1517008729672-a63ddcf53acb?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
-        background-size: cover;
-        background-position: center;
-    }
-
-    .dashboard-container {
-        display: flex;
-        height: 100vh;
-    }
-
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        background: #2c3e50;
-        padding: 20px;
-        height: 100vh;
-        color: white;
-    }
-
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .sidebar ul li {
-        padding: 15px;
-    }
-
-    .sidebar ul li a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        transition: 0.3s;
-    }
-
-    .sidebar ul li:hover {
-        background: #34495e;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-        padding: 20px;
-    }
-
-    .header {
-        text-align: center;
-        margin-bottom: 30px;
-        animation: fadeIn 1.5s ease-in-out;
-    }
-
-    .header h1 {
-        font-size: 28px;
-        font-weight: 600;
-    }
-
-    .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .card {
-        width: 200px;
-        height: 200px;
-        perspective: 1000px;
-        position: relative;
-    }
-
-    .card .front, .card .back {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        backface-visibility: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.6s;
-    }
-
-    .card .front {
-        background: linear-gradient(135deg, #6e45e2, #88d3ce);
-        color: white;
-    }
-
-    .card .back {
-        background: white;
-        color: #333;
-        transform: rotateY(180deg);
-        text-align: center;
-        padding: 20px;
-    }
-
-    .card:hover .front {
-        transform: rotateY(180deg);
-    }
-
-    .card:hover .back {
-        transform: rotateY(360deg);
-    }
-
-    /* Recommended Pad Section */
-    .pad-recommendation {
-        margin-top: 40px;
-        text-align: center;
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        animation: fadeIn 1.5s ease-in-out;
-    }
-
-    .pad-recommendation h2 {
-        font-size: 22px;
-        color: #333;
-    }
-
-    .pad-recommendation p {
-        font-size: 18px;
-        color: #555;
-        margin-top: 10px;
-    }
-
-    /* Fade In Animation */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
-
-<div class="dashboard-container">
-    
-    <!-- Sidebar Navigation -->
-    
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="header">
-            <h1>Welcome, {{user.name }}!</h1>
+            <h1>Welcome, {{ user.name }}!</h1>
             <p>Your personalized dashboard</p>
         </div>
 
@@ -164,41 +168,37 @@
         <div class="card-container">
             <div class="card">
                 <div class="front">
-                    <h3>Phone</h3>
-                    <p>Your given phone no.</p>
+                    <h3>Precautions</h3>
                 </div>
                 <div class="back">
-                    <p>{{ user.phone }}</p>
+                    <p id="precautions"></p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="front">
-                    <h3>Menstrual Duration</h3>
-                    <p>"Recognizing the duration, as a time of inner power, not of weakness."</p>
+                    <h3>Effects</h3>
                 </div>
                 <div class="back">
-                    <p>{{ user.menstruation_duration }}</p>
+                    <p id="effects"></p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="front">
-                    <h3>Itchiness</h3>
-                    <p>this would help</p>
+                    <h3>Medicine</h3>
                 </div>
                 <div class="back">
-                    <p>{{ user.itchiness }}</p>
+                    <p id="medicine"></p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="front">
-                    <h3>Skin Type</h3>
-                    <p>Your skin type</p>
+                    <h3>Sanitary Napkin</h3>
                 </div>
                 <div class="back">
-                    <p>{{ user.skin_type }}</p>
+                    <p id="sanitary_napkin"></p>
                 </div>
             </div>
         </div>
@@ -206,47 +206,66 @@
         <!-- Recommended Pad Section -->
         <div class="pad-recommendation">
             <h2>Recommended Sanitary Pad</h2>
-            <p>{{ recommended_pad }}</p>
+            <p id="suitable_pad"></p>
         </div>
     </div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Flip animation for cards
-        const cards = document.querySelectorAll(".card");
-        cards.forEach(card => {
-            card.addEventListener("mouseenter", function () {
-                card.classList.add("hovered");
-            });
-
-            card.addEventListener("mouseleave", function () {
-                card.classList.remove("hovered");
-            });
-        });
-
-        // Generic Pad Recommendation Logic
-        const flow = "{{ user.flow }}".toLowerCase();
         const skinType = "{{ user.skin_type }}".toLowerCase();
-        let padRecommendation = "A standard cotton-based pad with good absorption.";
 
-        if (flow.includes("heavy")) {
-            padRecommendation = "A long, overnight pad with maximum absorbency.";
-        } else if (flow.includes("light")) {
-            padRecommendation = "A slim, breathable pad for light flow days.";
-        }
+        let precautions, effects, medicine, sanitaryNapkin, padRecommendation;
 
         if (skinType.includes("sensitive")) {
-            padRecommendation += " Opt for a pad with organic, fragrance-free material.";
+            precautions = "Be aware that even natural products can cause reactions, so introduce new products carefully and look for pads with no added chemicals.";
+            effects = "Scented materials may cause rashes or allergies.";
+            medicine = "Cool compresses to soothe inflamed skin and Over-the-counter hydrocortisone cream (1%) for mild irritation.";
+            sanitaryNapkin = "Carmesi and Nua.";
+            padRecommendation = "A hypoallergenic pad made with organic cotton.";
         } else if (skinType.includes("oily")) {
-            padRecommendation += " A dry-feel pad with breathable layers is ideal.";
+            precautions = "Ensure pads are breathable to reduce excess moisture.";
+            effects = "Excessive moisture can cause bacterial growth and irritation.";
+            medicine = "Gentle cleansing with a mild, fragrance-free cleanser.";
+            sanitaryNapkin = "Whisper Ultra Clean and ultra thin pads.";
+            padRecommendation = "A dry-feel pad with ultra-breathable layers.";
+        } else if (skinType.includes("dry")) {
+            precautions = "Avoid overly absorbent pads that can exacerbate dryness.";
+            effects = "Increased risk of chafing and friction.";
+            medicine = "Fragrance-free, hypoallergenic emollients or moisturizers to soothe and hydrate the vulvar area and barrier creams to protect the skin.";
+            sanitaryNapkin = "Stayfree Secure Cottony Soft and sofy.";
+            padRecommendation = "Any product marketed as having a cottony soft top layer.";
+        } else if (skinType.includes("combination")) {
+            precautions = "Find a balance of breathability and softness and pay attention to how different areas of vulva react.";
+            effects = "Can experience effects from both dry and oily skin types.";
+            medicine = "Remedies will depend on the specific area of irritation and For dry areas, use emollients; for oily areas, use gentle cleansers.";
+            sanitaryNapkin = "Whisper Ultra Clean and stayfree secure.";
+            padRecommendation = "A versatile pad is essential and look for products that offer good absorbency without being overly drying.";
+        } else {
+            precautions = "Choose comfortable, breathable pads and maintain good hygiene practices.";
+            effects = "Still susceptible to irritation from prolonged pad use or poor hygiene.";
+            medicine = "Generally, good hygiene practices prevent most issues and For mild irritation, cool compresses or gentle cleansers may suffice.";
+            sanitaryNapkin = "Whisper (any line) and stayfree (any line).";
+            padRecommendation = "fragrance-free pad should be suitable and choose the right absorbency for your flow.";
         }
 
+        document.getElementById("precautions").textContent = precautions;
+        document.getElementById("effects").textContent = effects;
+        document.getElementById("medicine").textContent = medicine;
+        document.getElementById("sanitary_napkin").textContent = sanitaryNapkin;
         document.getElementById("suitable_pad").textContent = padRecommendation;
     });
 </script>
-<a href="{% url 'logout' %}"><button>Logout</button></a>
 
+
+
+
+<a href="{% url 'logout' %}">Logout</a>
+
+
+
+</body>
+</html> 
 
 
 

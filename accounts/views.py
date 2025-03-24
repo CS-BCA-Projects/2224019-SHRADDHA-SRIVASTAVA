@@ -51,21 +51,6 @@ def login_view(request):
     return render(request, "login.html", {"form": form})
 
 
-# User Login View
-# def login_view(request):
-#     if request.method == "POST":
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             phone = form.cleaned_data["phone"]
-#             if User.authenticate(phone):
-#                 return redirect("dashboard", phone=phone)
-#             else:
-#                 return render(request, "login.html", {"form": form, "error": "Invalid phone number."})
-
-#     else:
-#         form = LoginForm()
-
-#     return render(request, "login.html", {"form": form})
 
 
 
@@ -77,7 +62,9 @@ def dashboard(request, phone):
     recommendations = {
         "Dry": "Soft Cotton Pads",
         "Oily": "Ultra-Thin Breathable Pads",
-        "Normal": "Regular Absorbent Pads"
+        "Normal": "Regular Absorbent Pads",
+        "Sensitive": "Breathable pads",
+        "Combination": "Natural pads"
     }
     
     recommended_pad = recommendations.get(user["skin_type"], "Regular Pads")
@@ -85,9 +72,6 @@ def dashboard(request, phone):
     return render(request, "dashboard.html", {"user": user, "recommended_pad": recommended_pad})
 
 
-# Create your views here.
-# def index(request):
-#     return render(request, "index.html")
 
 
 
@@ -96,51 +80,7 @@ def logout_view(request):
     return render(request, "logout.html")
 
 
-# from django.shortcuts import render, redirect
-# from .forms import RegistrationForm, LoginForm
-# from .models import User
 
-# def register(request):
-#     if request.method == "POST":
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             user_data = {
-#                 "name": form.cleaned_data["name"],
-#                 "phone": form.cleaned_data["phone"],
-#                 "menstruation_duration": form.cleaned_data["menstruation_duration"],
-#                 "skin_type": form.cleaned_data["skin_type"],
-#                 "itchiness": form.cleaned_data["itchiness"],
-#             }
-#             User.register_user(user_data)
-#             return redirect("dashboard", name=user_data["name"]) 
-#     else:
-#         form = RegistrationForm()
-
-#     return render(request, "register.html", {"form": form})
-
-# def login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             # Implement authentication logic here
-#             pass
-#     else:
-#         form = LoginForm()
-#     return render(request, 'login.html', {'form': form})
-
-# def dashboard(request, name):
-#     user = User.get_user_by_name(name)
-    
-#     # Recommend pad based on skin type
-#     recommendations = {
-#         "Dry": "Soft Cotton Pads",
-#         "Oily": "Ultra-Thin Breathable Pads",
-#         "Normal": "Regular Absorbent Pads"
-#     }
-    
-#     recommended_pad = recommendations.get(user["skin_type"], "Regular Pads")
-
-#     return render(request, "dashboard.html", {"user": user, "recommended_pad": recommended_pad})
 
 
 
