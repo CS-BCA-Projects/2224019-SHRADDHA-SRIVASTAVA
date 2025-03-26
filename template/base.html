@@ -28,6 +28,8 @@
         top: 10px;
         left: 10px;
         display: flex;
+        
+        
     }
     
     .sidebar {
@@ -40,6 +42,7 @@
         overflow-x: hidden;
         transition: 0.3s;
         padding-top: 60px;
+        z-index: 1000;
     }
     
     .sidebar a {
@@ -76,27 +79,9 @@
         <a href="/index/">About</a>
         <a href="{% url 'register' %}">Registration</a>
         <a href="{% url 'contact' %}">Contact</a>
+        {% comment %} <a href="{% url 'questionnaire:dashboard' %}">Dashboard</a> {% endcomment %}
     </div>
 
-    
-
-    
-
-
-
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    
-
-{% block body %}{% endblock body %}
 </body>
 <script>
     function openSidebar() {
@@ -108,3 +93,4 @@
     }
 </script>
 </html>
+{% block body %}{% endblock body %}
