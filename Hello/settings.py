@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'chatbot',
+    'questionnaire',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +105,8 @@ db = client[MONGO_DB_NAME]
 MONGO_COLLECTIONS = {
     "contact": db["contact"],         # Collection for Contact app
     "user": db["user"],             # Collection for Registration app
-    "response": db["response"],       # Collection for Chatbot app
+    "response": db["response"],  
+    "result": db["result"],    # Collection for Chatbot app
 }
 
 
@@ -155,10 +157,10 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# #added manually
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static")
-# ]
+#added manually
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 
 
 # Redirect users to dashboard after login

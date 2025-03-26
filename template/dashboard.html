@@ -23,42 +23,13 @@
         .dashboard-container {
             display: flex;
             height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: #2c3e50;
-            padding: 20px;
-            height: 100vh;
-            color: white;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            padding: 15px;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sidebar ul li:hover {
-            background: #34495e;
-        }
-
-        /* Main Content */
         .main-content {
             flex: 1;
-            padding: 100px;
-            align: center;
+            padding: 50px;
         }
 
         .header {
@@ -70,6 +41,31 @@
         .header h1 {
             font-size: 28px;
             font-weight: 600;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: #f1f1f1;
+        }
+
+        .result-summary {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-summary h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .result-summary p {
+            font-size: 16px;
+            color: #555;
         }
 
         .card-container {
@@ -121,7 +117,6 @@
             transform: rotateY(360deg);
         }
 
-        /* Recommended Pad Section */
         .pad-recommendation {
             margin-top: 40px;
             text-align: center;
@@ -146,7 +141,21 @@
             margin-top: 10px;
         }
 
-        /* Fade In Animation */
+        .logout-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .logout-link:hover {
+            background: #34495e;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -154,119 +163,117 @@
     </style>
 </head>
 <body>
-
-
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="header">
-            <h1>Welcome, {{ user.name }}!</h1>
-            <p>Your personalized dashboard</p>
-        </div>
-
-        <!-- Animated User Info Cards -->
-        <div class="card-container">
-            <div class="card">
-                <div class="front">
-                    <h3>Precautions</h3>
-                </div>
-                <div class="back">
-                    <p id="precautions"></p>
-                </div>
+    <div class="dashboard-container">
+        <div class="main-content">
+            <div class="header">
+                <h1>Welcome, {{result_data.name}}!</h1>
+                    {% comment %} {{ skin_type }} {% endcomment %}
+                <p>Your personalized dashboard</p>
             </div>
 
-            <div class="card">
-                <div class="front">
-                    <h3>Effects</h3>
-                </div>
-                <div class="back">
-                    <p id="effects"></p>
-                </div>
-            </div>
+            {% comment %} {% if result_data %}
+                <div class="result-summary">
+                    <h2>Your Questionnaire Results</h2>
+                    <p><strong>Duration:</strong> {{ result_data.duration }}</p>
+                    <p><strong>Flow:</strong> {{ result_data.flow }}</p>
+                    <p><strong>Itchiness:</strong> {{ result_data.itchiness }}</p>
+                    <p><strong>Submitted:</strong> {{ result_data.timestamp }}</p>
+                </div> {% endcomment %}
 
-            <div class="card">
-                <div class="front">
-                    <h3>Medicine</h3>
-                </div>
-                <div class="back">
-                    <p id="medicine"></p>
-                </div>
-            </div>
+                <div class="card-container">
+                    <div class="card">
+                        <div class="front">
+                            <h3>Precautions</h3>
+                        </div>
+                        <div class="back">
+                            <p id="precautions"></p>
+                        </div>
+                    </div>
 
-            <div class="card">
-                <div class="front">
-                    <h3>Sanitary Napkin</h3>
-                </div>
-                <div class="back">
-                    <p id="sanitary_napkin"></p>
-                </div>
-            </div>
-        </div>
+                    <div class="card">
+                        <div class="front">
+                            <h3>Effects</h3>
+                        </div>
+                        <div class="back">
+                            <p id="effects"></p>
+                        </div>
+                    </div>
 
-        <!-- Recommended Pad Section -->
-        <div class="pad-recommendation">
-            <h2>Recommended Sanitary Pad</h2>
-            <p id="suitable_pad"></p>
+                    <div class="card">
+                        <div class="front">
+                            <h3>Medicine</h3>
+                        </div>
+                        <div class="back">
+                            <p id="medicine"></p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="front">
+                            <h3>Sanitary Napkin</h3>
+                        </div>
+                        <div class="back">
+                            <p id="sanitary_napkin"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pad-recommendation">
+                    <h2>Recommended Sanitary Pad</h2>
+                    <p id="recommended_pad"></p>
+                </div>
+            {% comment %} {% else %}
+                <p>No data available for this skin type yet.</p>
+            {% endif %} {% endcomment %}
+
+            <a href="{% url 'logout' %}" class="logout-link">Logout</a>
         </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const skinType = "{{ user.skin_type }}".toLowerCase();
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const skinType = "{{ result_data.skin_type }}".toLowerCase();
 
-        let precautions, effects, medicine, sanitaryNapkin, padRecommendation;
+            let precautions, effects, medicine, sanitaryNapkin, padRecommendation;
 
-        if (skinType.includes("sensitive")) {
-            precautions = "Be aware that even natural products can cause reactions, so introduce new products carefully and look for pads with no added chemicals.";
-            effects = "Scented materials may cause rashes or allergies.";
-            medicine = "Cool compresses to soothe inflamed skin and Over-the-counter hydrocortisone cream (1%) for mild irritation.";
-            sanitaryNapkin = "Carmesi and Nua.";
-            padRecommendation = "A hypoallergenic pad made with organic cotton.";
-        } else if (skinType.includes("oily")) {
-            precautions = "Ensure pads are breathable to reduce excess moisture.";
-            effects = "Excessive moisture can cause bacterial growth and irritation.";
-            medicine = "Gentle cleansing with a mild, fragrance-free cleanser.";
-            sanitaryNapkin = "Whisper Ultra Clean and ultra thin pads.";
-            padRecommendation = "A dry-feel pad with ultra-breathable layers.";
-        } else if (skinType.includes("dry")) {
-            precautions = "Avoid overly absorbent pads that can exacerbate dryness.";
-            effects = "Increased risk of chafing and friction.";
-            medicine = "Fragrance-free, hypoallergenic emollients or moisturizers to soothe and hydrate the vulvar area and barrier creams to protect the skin.";
-            sanitaryNapkin = "Stayfree Secure Cottony Soft and sofy.";
-            padRecommendation = "Any product marketed as having a cottony soft top layer.";
-        } else if (skinType.includes("combination")) {
-            precautions = "Find a balance of breathability and softness and pay attention to how different areas of vulva react.";
-            effects = "Can experience effects from both dry and oily skin types.";
-            medicine = "Remedies will depend on the specific area of irritation and For dry areas, use emollients; for oily areas, use gentle cleansers.";
-            sanitaryNapkin = "Whisper Ultra Clean and stayfree secure.";
-            padRecommendation = "A versatile pad is essential and look for products that offer good absorbency without being overly drying.";
-        } else {
-            precautions = "Choose comfortable, breathable pads and maintain good hygiene practices.";
-            effects = "Still susceptible to irritation from prolonged pad use or poor hygiene.";
-            medicine = "Generally, good hygiene practices prevent most issues and For mild irritation, cool compresses or gentle cleansers may suffice.";
-            sanitaryNapkin = "Whisper (any line) and stayfree (any line).";
-            padRecommendation = "fragrance-free pad should be suitable and choose the right absorbency for your flow.";
-        }
+            if (skinType === "sensitive") {
+                precautions = "Be aware that even natural products can cause reactions, so introduce new products carefully and look for pads with no added chemicals.";
+                effects = "Scented materials may cause rashes or allergies.";
+                medicine = "Cool compresses to soothe inflamed skin and Over-the-counter hydrocortisone cream (1%) for mild irritation.";
+                sanitaryNapkin = "Carmesi and Nua.";
+                padRecommendation = "A hypoallergenic pad made with organic cotton.";
+            } else if (skinType === "oily") {
+                precautions = "Ensure pads are breathable to reduce excess moisture.";
+                effects = "Excessive moisture can cause bacterial growth and irritation.";
+                medicine = "Gentle cleansing with a mild, fragrance-free cleanser.";
+                sanitaryNapkin = "Whisper Ultra Clean and ultra thin pads.";
+                padRecommendation = "A dry-feel pad with ultra-breathable layers.";
+            } else if (skinType === "dry") {
+                precautions = "Avoid overly absorbent pads that can exacerbate dryness.";
+                effects = "Increased risk of chafing and friction.";
+                medicine = "Fragrance-free, hypoallergenic emollients or moisturizers to soothe and hydrate the vulvar area and barrier creams to protect the skin.";
+                sanitaryNapkin = "Stayfree Secure Cottony Soft and Sofy.";
+                padRecommendation = "Any product marketed as having a cottony soft top layer.";
+            } else if (skinType === "combination") {
+                precautions = "Find a balance of breathability and softness and pay attention to how different areas of vulva react.";
+                effects = "Can experience effects from both dry and oily skin types.";
+                medicine = "Remedies will depend on the specific area of irritation and For dry areas, use emollients; for oily areas, use gentle cleansers.";
+                sanitaryNapkin = "Whisper Ultra Clean and Stayfree Secure.";
+                padRecommendation = "A versatile pad is essential and look for products that offer good absorbency without being overly drying.";
+            } else { // Normal skin type
+                precautions = "Choose comfortable, breathable pads and maintain good hygiene practices.";
+                effects = "Still susceptible to irritation from prolonged pad use or poor hygiene.";
+                medicine = "Generally, good hygiene practices prevent most issues and For mild irritation, cool compresses or gentle cleansers may suffice.";
+                sanitaryNapkin = "Whisper (any line) and Stayfree (any line).";
+                padRecommendation = "Fragrance-free pad should be suitable and choose the right absorbency for your flow.";
+            }
 
-        document.getElementById("precautions").textContent = precautions;
-        document.getElementById("effects").textContent = effects;
-        document.getElementById("medicine").textContent = medicine;
-        document.getElementById("sanitary_napkin").textContent = sanitaryNapkin;
-        document.getElementById("suitable_pad").textContent = padRecommendation;
-    });
-</script>
-
-
-
-
-<a href="{% url 'logout' %}">Logout</a>
-
-
-
+            document.getElementById("precautions").textContent = precautions || "No data available.";
+            document.getElementById("effects").textContent = effects || "No data available.";
+            document.getElementById("medicine").textContent = medicine || "No data available.";
+            document.getElementById("sanitary_napkin").textContent = sanitaryNapkin || "No data available.";
+            document.getElementById("recommended_pad").textContent = padRecommendation || "No recommendation available.";
+        });
+    </script>
 </body>
-</html> 
-
-
-
-
+</html>

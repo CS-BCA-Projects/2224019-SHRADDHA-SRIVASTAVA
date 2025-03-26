@@ -88,9 +88,27 @@
                 transform: translateY(0);
             }
         }
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            min-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
+    <div class="alert">
+    {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+  {% endfor %} 
+    {% endif %} 
+    </div>
     <div class="container">
         <h2>Login</h2>
         <form method="POST">
@@ -105,9 +123,7 @@
             <button type="submit">Login</button>
         </form>
         <p>New user? <a href="{% url 'register' %}">Register here</a></p>
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
+        
     </div>
 
     <script>
