@@ -3,7 +3,6 @@
 {% block title %}Registration{% endblock title %}
 
 {% block body %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,12 +25,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(100px); /* Adjust blur strength */
-            background: rgba(1, 0, 0, 0.3); /* Add slight dark tint */
-            z-index: -1; /* Place above video but below form */
+            backdrop-filter: blur(100px);
+            background: rgba(1, 0, 0, 0.3);
+            z-index: -1;
         }
-        
-        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -41,9 +38,6 @@
             align-items: center;
             height: 100vh;
         }
-
-        
-
         .container {
             background: rgba(255, 255, 255, 0.9);
             padding: 30px;
@@ -53,28 +47,23 @@
             max-width: 600px;
             animation: fadeIn 1s ease-in-out;
         }
-
         h2 {
             color: #ff4d79;
             text-align: center;
         }
-
         .form-group {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
         }
-
         .form-group div {
             width: 48%;
         }
-
         label {
             display: block;
             font-weight: bold;
             margin-top: 10px;
         }
-
         input, select {
             width: 100%;
             padding: 10px;
@@ -83,7 +72,6 @@
             border-radius: 5px;
             font-size: 16px;
         }
-
         button {
             margin-top: 15px;
             width: 100%;
@@ -96,27 +84,21 @@
             cursor: pointer;
             transition: background 0.3s ease-in-out;
         }
-
         button:hover {
             background: #ff2e62;
         }
-
         p {
             text-align: center;
             margin-top: 15px;
         }
-
         a {
             color: #ff4d79;
             text-decoration: none;
             font-weight: bold;
         }
-
         a:hover {
             text-decoration: underline;
         }
-
-        /* Responsive Design */
         @media (max-width: 600px) {
             .form-group {
                 flex-direction: column;
@@ -125,55 +107,57 @@
                 width: 100%;
             }
         }
-
-        /* Animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        #alert-box {
-            position: fixed;
+        .notification-container {
+            position: absolute;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: auto;
-            max-width: 80%;
-            z-index: 1050;
-            text-align: center;
-            padding: 15px;
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
+        
+        .alert {
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: black;
+            font-size: 16px;
+            text-align: center;
+            min-width: 300px;
+            max-width: 80%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert-success {
+            background-color: #4CAF50;
+        }
+        
+        
     </style>
 </head>
 <body>
-    <body>
-        <!-- Video Background -->
-        <video autoplay muted loop id="background-video">
-            <source src="https://videos.pexels.com/video-files/7719718/7719718-sd_960_506_25fps.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    
-
-
-    {% if error %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
-    </div>
-    {% endif %}
-    
-    <div class="container">
+    <video autoplay muted loop id="background-video">
+        <source src="https://videos.pexels.com/video-files/7719718/7719718-sd_960_506_25fps.mp4" type="video/mp4">
+    </video>
+<div class="container">
         <h2>User Registration</h2>
+        {% comment %} {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %} {% endcomment %}
+    <div class= "notification-container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
         <form method="POST">
             {% csrf_token %}
-            
             <div class="form-group">
                 <div>
                     <label>Name:</label>
@@ -184,8 +168,7 @@
                     <input type="text" name="phone" required>
                 </div>
             </div>
-
-            <div class="form-group">
+            {% comment %} <div class="form-group">
                 <div>
                     <label>Age:</label>
                     <input type="number" name="age" required>
@@ -195,7 +178,6 @@
                     <input type="number" name="menstruation_duration" required>
                 </div>
             </div>
-
             <div class="form-group">
                 <div>
                     <label>Menstrual Flow:</label>
@@ -215,18 +197,7 @@
                         <option value="Sensitive">Sensitive</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <label>Itchiness:</label>
-                    <select name="itchiness">
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-            </div>
-
+            </div> {% endcomment %}
             <div class="form-group">
                 <div>
                     <label>Password:</label>
@@ -237,27 +208,31 @@
                     <input type="password" name="confirm_password" id="confirm_password" required>
                 </div>
             </div>
-
             <button type="submit">Register</button>
         </form>
         <p>Already registered? <a href="{% url 'login' %}">Login here</a></p>
-    </div>
-
+</div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const form = document.querySelector("form");
-
             form.addEventListener("submit", function(event) {
                 const password = document.getElementById("password").value;
                 const confirmPassword = document.getElementById("confirm_password").value;
-
                 if (password !== confirmPassword) {
                     alert("Passwords do not match!");
-                    event.preventDefault();  // Prevent form submission
+                    event.preventDefault();
                 }
             });
         });
-    </script>
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.display = 'none';
+            });
+        }, 3000);
+        </script>
+        
+    
 </body>
 </html>
 {% endblock body %}

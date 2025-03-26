@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('home.urls')),
     path('', include('accounts.urls')),
     path("", include("chatbot.urls")),
+    path("questionnaire/", include('questionnaire.urls')),
 ]

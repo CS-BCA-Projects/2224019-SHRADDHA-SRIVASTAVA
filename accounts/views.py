@@ -1,83 +1,147 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm,  LoginForm
-from .models import User
-from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse
+from pymongo import MongoClient
+from django.conf import settings
+import bcrypt
+from django.contrib import messages
 
-
-
+# Connect to MongoDB
+client = MongoClient(settings.MONGO_URI)
+db = client["stree_sewa_satkar"]
+user_collection = db["user"]
 
 def register(request):
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user_data = {
-                "name": form.cleaned_data["name"],
-                "phone": form.cleaned_data["phone"],
-                "age": form.cleaned_data["age"],
-                "menstruation_duration": form.cleaned_data["menstruation_duration"],
-                "menstrual_flow": form.cleaned_data["menstrual_flow"],
-                "skin_type": form.cleaned_data["skin_type"],
-                "itchiness": form.cleaned_data["itchiness"],
-                "password": make_password(form.cleaned_data["password"]),  # Hash password
-            }
-            form.cleaned_data.pop("confirm_password", None) 
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
 
-            User.register_user(user_data)
-            return redirect("dashboard", phone=user_data["phone"])  # Redirect to dashboard
+        if not name or not phone or not password or not confirm_password:
+            return render(request, 'register.html', {'error': "All fields are required."})
 
-    else:
-        form = RegistrationForm()
-    return render(request, "register.html", {"form": form})
+        if password != confirm_password:
+            return render(request, 'register.html', {'error': "Passwords do not match."})
 
+        if user_collection.find_one({"phone": phone}):
+            messages.error(request, "Phone number already registered.")
+            return redirect("register")
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        user_collection.insert_one({
+            "name": name,
+            "phone": phone,
+            "password": hashed_password.decode('utf-8')  
+        })
+
+        messages.success(request, "Registration successful! Please log in.")
+        return redirect("login")
+
+    return render(request, 'register.html')
 
 def login_view(request):
     if request.method == "POST":
-        form = LoginForm(request.POST)
-        
-        if form.is_valid():
-            phone = form.cleaned_data["phone"]
-            password = form.cleaned_data["password"]
-            
-            user_data = User.get_user_by_phone(phone)
-              
-            if user_data and check_password(password, user_data.get("password", "")):  # ✅ Validate hashed password
-                return redirect("dashboard", phone=user_data["phone"])  # ✅ Redirect to dashboard
-            else:
-                return render(request, "login.html", {"form": form, "error": "Invalid phone number or password!"})
-    else:
-        form = LoginForm()
+        phone = request.POST.get("phone")
+        password = request.POST.get("password")
 
-    return render(request, "login.html", {"form": form})
+        user_data = user_collection.find_one({"phone": phone})
 
+        if not user_data:
+            messages.error(request, "Invalid phone number.")  # ✅ Show message if phone not found
+            return redirect("login")
 
+        stored_password = user_data.get("password")  # Ensure password exists
 
+        if stored_password and bcrypt.checkpw(password.encode("utf-8"), stored_password.encode("utf-8")):  
+            request.session["user_id"] = str(user_data["_id"])  
+            request.session["user_name"] = user_data["name"]  
+            messages.success(request, "Login successful!")
+            return redirect("index")  
 
+        messages.error(request, "Invalid password.")  # ✅ Show specific message for wrong password
+        return redirect("login")
 
+    return render(request, "login.html")
 
-def dashboard(request, phone):
-    user = User.get_user_by_phone(phone)
-    
-    # Recommend pad based on skin type
-    recommendations = {
-        "Dry": "Soft Cotton Pads",
-        "Oily": "Ultra-Thin Breathable Pads",
-        "Normal": "Regular Absorbent Pads",
-        "Sensitive": "Breathable pads",
-        "Combination": "Natural pads"
-    }
-    
-    recommended_pad = recommendations.get(user["skin_type"], "Regular Pads")
-
-    return render(request, "dashboard.html", {"user": user, "recommended_pad": recommended_pad})
-
-
-
-
-
-# Logout View
 def logout_view(request):
-    return render(request, "logout.html")
+    request.session.flush()  
+    messages.success(request, "You have been logged out.")
+    return redirect("login")
+
+
+
+# from django.shortcuts import render, redirect
+# from .forms import RegistrationForm,  LoginForm
+# from pymongo import MongoClient
+# from django.contrib.auth.hashers import make_password, check_password
+# from django.http import JsonResponse
+# from django.conf import settings
+# import bcrypt
+# from django.contrib import messages 
+# from .models import User
+
+
+# # Connect to MongoDB
+# client = MongoClient(settings.MONGO_URI)
+# db = client['stree_sewa_satkar']  # Your Django database
+# user_collection = db['user']  # Collection where user data is stored
+
+# def register(request):
+#     if request.method == "POST":
+#         name = request.POST['name']
+#         phone = request.POST['phone']
+#         password = request.POST['password']
+#         confirm_password = request.POST['confirm_password']
+
+#         # Check if passwords match
+#         if password != confirm_password:
+#             return render(request, 'register.html', {'error': "Passwords do not match"})
+
+#         if db.user.find_one({"phone": phone}):
+#             messages.error(request, "Phone already exists!")  # ✅ Store message
+#             return redirect("register")  # ✅ Redirect to refresh page
+
+#         # Hash the password before storing it
+#         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+#         # Save the user in MongoDB
+#         user_data = {
+#             "name": name,
+#             "phone": phone,
+#             "password": hashed_password.decode('utf-8')  # Store hashed password
+#         }
+#         user_collection.insert_one(user_data)
+
+#         # Redirect to login after successful registration
+#         messages.success(request, "Registration successful! Please log in.")  # ✅ Show success message
+#         return redirect("login")
+
+#     return render(request, 'register.html')
+
+
+# def login_view(request):
+#     if request.method == "POST":
+#         form = LoginForm(request.POST)
+        
+#         if form.is_valid():
+#             phone = form.cleaned_data["phone"]
+#             password = form.cleaned_data["password"]
+            
+#             user_data = User.get_user_by_phone(phone)
+              
+#             if user_data and check_password(password, user_data.get("password", "")):  # ✅ Validate hashed password
+#                 return redirect("index")  # ✅ Redirect to dashboard
+#             else:
+#                 return render(request, "login.html", {"form": form, "error": "Invalid phone number or password!"})
+#     else:
+#         form = LoginForm()
+
+#     return render(request, "login.html", {"form": form})
+
+
+
+# def logout_view(request):
+#     return render(request, "logout.html")
 
 
 

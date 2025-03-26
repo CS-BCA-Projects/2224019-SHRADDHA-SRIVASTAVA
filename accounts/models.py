@@ -1,36 +1,43 @@
-# from django.db import models
-from django.db import models
-
+from pymongo import MongoClient
 from django.conf import settings
-from django.contrib.auth.hashers import check_password
-# Correcting database connection
-# ✅ Use correct setting name
+import bcrypt
 
-
-# Access MongoDB
-# db = settings.db
+# Connect to MongoDB
+client = MongoClient(settings.MONGO_URI)
+db = client[settings.MONGO_DB_NAME]
+user_collection = db["user"]
 
 class User:
-    collection = settings.MONGO_COLLECTIONS["user"] # MongoDB collection
+    """A class to handle user operations in MongoDB."""
 
     @staticmethod
-    def register_user(data):
-        """Insert user data into MongoDB."""
-        User.collection.insert_one(data)
+    def create_user(name, phone, password):
+        """Registers a new user in MongoDB with a hashed password."""
+        if user_collection.find_one({"phone": phone}):
+            return False  # User already exists
+        
+        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
+        user_collection.insert_one({
+            "name": name,
+            "phone": phone,
+            "password": hashed_password.decode("utf-8")  
+        })
+        return True  # Registration successful
 
     @staticmethod
     def get_user_by_phone(phone):
-        """Retrieve user data by phone number."""
-        return User.collection.find_one({"phone": phone})
-
-
-# Create your models here.
+        """Fetches a user by phone number."""
+        return user_collection.find_one({"phone": phone})
 
     @staticmethod
     def authenticate(phone, password):
-        """Check if user exists and verify password."""
-        user = User.collection.find_one({"phone": phone})
-        if user and check_password(password, user.get["password"]):  
-           return User
-        return None
+        """Checks if the provided phone and password are correct."""
+        user = user_collection.find_one({"phone": phone})
+        if user and bcrypt.checkpw(password.encode("utf-8"), user["password"].encode("utf-8")):
+            return user  
+        return None  
+
+
+
 

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menstruation Questionnaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.5s ease-in-out;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            width: 40%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .input-group select, .input-group input {
+            padding: 10px;
+            border: 2px solid #ff758c;
+            border-radius: 5px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #ff416c;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.3);
+        }
+
+        .submit-btn {
+            background: #ff758c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #ff416c;
+        }
+
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 18px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode {
+            background: linear-gradient(to right, #141e30, #243b55);
+        }
+
+        .dark-mode .container {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        .dark-mode .input-group input, .dark-mode .input-group select {
+            background: #333;
+            color: white;
+            border: 2px solid #ff758c;
+        }
+
+        .error-messages {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-switch" onclick="toggleTheme()">Switch Theme</div>
+    <div class="container">
+        <h2><i class="fas fa-question-circle"></i> Answer a Few Questions</h2>
+        <form method="POST" action="{% url 'questionnaire' %}">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="error-messages">
+                    <p>Please correct the following errors:</p>
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="input-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" placeholder="Enter your age" required>
+            </div>
+            <div class="input-group">
+                <label for="duration">Menstruation Duration:</label>
+                <input type="text" id="duration" name="duration" placeholder="Enter duration in days" required>
+            </div>
+            <div class="input-group">
+                <label for="flow">Menstrual Flow:</label>
+                <select id="flow" name="flow" required>
+                    <option value="Light">Light</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Heavy">Heavy</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="skin_type">Skin Type:</label>
+                <select id="skin_type" name="skin_type" required>
+                    <option value="Dry">Dry</option>
+                    <option value="Oily">Oily</option>
+                    <option value="Combination">Combination</option>
+                    <option value="Sensitive">Sensitive</option>
+                    <option value="Normal">Normal</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="itchiness">Itchiness:</label>
+                <select id="itchiness" name="itchiness" required>
+                    <option value="None">None</option>
+                    <option value="Mild">Mild</option>
+                    <option value="Severe">Severe</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+</body>
+</html>
