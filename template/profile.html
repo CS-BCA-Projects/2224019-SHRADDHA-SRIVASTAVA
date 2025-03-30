@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 60%;
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .form-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 5px;
+            background: white;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        button.edit {
+            background: #ff758c;
+            color: white;
+        }
+
+        button.delete {
+            background: #ff3e3e;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff758c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        a:hover {
+            background: #ff5277;
+        }
+
+        /* Background Decorations */
+        .animated-shapes {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .shape.one {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 10%;
+            animation: float 6s infinite alternate ease-in-out;
+        }
+
+        .shape.two {
+            width: 180px;
+            height: 180px;
+            bottom: 15%;
+            right: 10%;
+            animation: float 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-shapes">
+        <div class="shape one"></div>
+        <div class="shape two"></div>
+    </div>
+    <div class="container">
+        <h1><i class="fas fa-user-circle"></i> Your Profile</h1>
+        {% if profile_data %}
+            <div class="form-container">
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" value="{{ profile_data.name }}" required>
+                    <label for="phone">Phone:</label>
+                    <input type="text" name="phone" value="{{ profile_data.phone }}" required>
+                    {% if profile_data.age %}
+                        <label for="age">Age:</label>
+                        <input type="number" name="age" value="{{ profile_data.age }}" required>
+                    {% endif %}
+                </div>
+                <div class="form-section">
+                    <h2>Menstruation Details</h2>
+                    {% if profile_data.age %}
+                        <label for="duration">Duration:</label>
+                        <input type="text" name="duration" value="{{ profile_data.duration }}" required>
+                        <label for="flow">Flow:</label>
+                        <select name="flow" required>
+                            <option value="Light" {% if profile_data.flow == "Light" %}selected{% endif %}>Light</option>
+                            <option value="Moderate" {% if profile_data.flow == "Moderate" %}selected{% endif %}>Moderate</option>
+                            <option value="Heavy" {% if profile_data.flow == "Heavy" %}selected{% endif %}>Heavy</option>
+                        </select>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="submit" name="action" value="edit" class="edit">Save Changes</button>
+                <button type="submit" name="action" value="delete" class="delete" onclick="return confirm('Are you sure you want to delete your profile?');">Delete Profile</button>
+            </div>
+        {% endif %}
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f9f9f9; }
+        .container { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; }
+        h2 { color: #6e45e2; margin-bottom: 10px; }
+        p { font-size: 16px; color: #555; }
+        form { display: flex; flex-direction: column; gap: 15px; }
+        label { font-weight: bold; color: #333; }
+        input, select { padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 100%; }
+        .buttons { display: flex; gap: 10px; justify-content: center; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        button.edit { background: #6e45e2; color: white; }
+        button.edit:hover { background: #5635b8; }
+        button.delete { background: #e74c3c; color: white; }
+        button.delete:hover { background: #c0392b; }
+        .message { text-align: center; margin-bottom: 20px; }
+        .message.success { color: #27ae60; }
+        .message.error { color: #e74c3c; }
+        a { display: inline-block; padding: 10px 20px; background: #2c3e50; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+        a:hover { background: #34495e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Profile</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if profile_data %}
+            <div>
+                <h2>Profile Data</h2>
+                <p><strong>Name:</strong> {{ profile_data.name }}</p>
+                <p><strong>Phone:</strong> {{ profile_data.phone }}</p>
+                {% if profile_data.age %}
+                    <p><strong>Age:</strong> {{ profile_data.age }}</p>
+                    <p><strong>Duration:</strong> {{ profile_data.duration }}</p>
+                    <p><strong>Flow:</strong> {{ profile_data.flow }}</p>
+                    <p><strong>Skin Type:</strong> {{ profile_data.skin_type }}</p>
+                    <p><strong>Itchiness:</strong> {{ profile_data.itchiness }}</p>
+                {% endif %}
+            </div>
+
+            <div>
+                <h2>Edit Profile</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" value="{{ profile_data.name }}" required>
+                    {% if profile_data.age %}
+                        <label for="age">Age:</label>
+                        <input type="number" name="age" value="{{ profile_data.age }}" min="1" max="150" required>
+                        <label for="duration">Menstruation Duration:</label>
+                        <input type="text" name="duration" value="{{ profile_data.duration }}" maxlength="10" required>
+                        <label for="flow">Menstrual Flow:</label>
+                        <select name="flow" required>
+                            <option value="Light" {% if profile_data.flow == "Light" %}selected{% endif %}>Light</option>
+                            <option value="Moderate" {% if profile_data.flow == "Moderate" %}selected{% endif %}>Moderate</option>
+                            <option value="Heavy" {% if profile_data.flow == "Heavy" %}selected{% endif %}>Heavy</option>
+                        </select>
+                        <label for="skin_type">Skin Type:</label>
+                        <select name="skin_type" required>
+                            <option value="Dry" {% if profile_data.skin_type == "Dry" %}selected{% endif %}>Dry</option>
+                            <option value="Oily" {% if profile_data.skin_type == "Oily" %}selected{% endif %}>Oily</option>
+                            <option value="Combination" {% if profile_data.skin_type == "Combination" %}selected{% endif %}>Combination</option>
+                            <option value="Sensitive" {% if profile_data.skin_type == "Sensitive" %}selected{% endif %}>Sensitive</option>
+                            <option value="Normal" {% if profile_data.skin_type == "Normal" %}selected{% endif %}>Normal</option>
+                        </select>
+                        <label for="itchiness">Itchiness:</label>
+                        <select name="itchiness" required>
+                            <option value="None" {% if profile_data.itchiness == "None" %}selected{% endif %}>None</option>
+                            <option value="Mild" {% if profile_data.itchiness == "Mild" %}selected{% endif %}>Mild</option>
+                            <option value="Severe" {% if profile_data.itchiness == "Severe" %}selected{% endif %}>Severe</option>
+                        </select>
+                    {% endif %}
+                    <div class="buttons">
+                        <button type="submit" name="action" value="edit" class="edit">Save Changes</button>
+                        <button type="submit" name="action" value="delete" class="delete" onclick="return confirm('Are you sure you want to delete your profile? This will log you out.');">Delete Profile</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html> {% endcomment %}
