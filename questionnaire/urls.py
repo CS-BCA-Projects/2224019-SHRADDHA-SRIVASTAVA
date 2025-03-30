@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import questionnaire_view, dashboard_view
+from .views import questionnaire, dashboard
 
 urlpatterns = [
-    path('', questionnaire_view, name='questionnaire'),  # Form submission
-    path('dashboard/<str:skin_type>/', dashboard_view, name='dashboard'),  # Redirect here
+    path('', questionnaire, name='questionnaire'),  # Form submission
+    path('dashboard/<str:skin_type>/', dashboard, name='dashboard'),  # Redirect here
 ]
 
 

@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LoginView, LogoutView
 
 admin.site.site_header = "Shraddha Admin"
 admin.site.site_title = "Shraddha Admin Portal"
@@ -27,4 +28,5 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path("", include("chatbot.urls")),
     path("questionnaire/", include('questionnaire.urls')),
+    path('', include('myself.urls')),
 ]

@@ -9,6 +9,7 @@ client = MongoClient(settings.MONGO_URI)
 db = client["stree_sewa_satkar"]
 user_collection = db["user"]
 
+
 def register(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -28,12 +29,13 @@ def register(request):
 
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        user_collection.insert_one({
+        user_data = {
             "name": name,
             "phone": phone,
             "password": hashed_password.decode('utf-8')  
-        })
-
+        }
+        user_collection.insert_one(user_data)
+                                   
         messages.success(request, "Registration successful! Please log in.")
         return redirect("login")
 
@@ -54,7 +56,10 @@ def login_view(request):
 
         if stored_password and bcrypt.checkpw(password.encode("utf-8"), stored_password.encode("utf-8")):  
             request.session["user_id"] = str(user_data["_id"])  
-            request.session["user_name"] = user_data["name"]  
+            request.session["user_name"] = user_data["name"] 
+
+            from myself.views import save_profile_data
+            save_profile_data(user_data["name"]) 
             messages.success(request, "Login successful!")
             return redirect("index")  
 
