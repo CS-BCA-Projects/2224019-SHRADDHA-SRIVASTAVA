@@ -3,94 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stree Sewa Satkar</title>
     
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        }
         
-<title> {% block title %}{% endblock title %} Shraddha </title>  
+        /* Sidebar styles */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #e91e63;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            z-index: 1000;
+        }
 
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.2s;
+        }
 
-   
+        .sidebar a:hover {
+            background-color: #d81b60;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Main container */
+        .container {
+            margin-top: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar toggle button */
+        .open-btn {
+            font-size: 18px;
+            padding: 10px 15px;
+            background-color: transparent;
+            color: black;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            display: flex;
+        }
+    </style>
 </head>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .open-btn {
-        font-size: 18px;
-        padding: 10px 15px;
-        background-color:transparent;
-        color: black;
-        border: none;
-        cursor: pointer;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        display: flex;
-        
-        
-    }
-    
-    .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #e91e63;
-        overflow-x: hidden;
-        transition: 0.3s;
-        padding-top: 60px;
-        z-index: 1000;
-    }
-    
-    .sidebar a {
-        padding: 10px 15px;
-        text-decoration: none;
-        font-size: 20px;
-        color: white;
-        display: block;
-        transition: 0.2s;
-    }
-    
-    .sidebar a:hover {
-        background-color: #575757;
-    }
-    
-    .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-    }
-
-</style>
 <body>
 
+    <!-- Sidebar Button -->
     <button class="open-btn" onclick="openSidebar()">☰</button>
     
+    <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <button class="close-btn" onclick="closeSidebar()">×</button>
-        <a href="/index/">About</a>
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+
         <a href="{% url 'register' %}">Registration</a>
         <a href="{% url 'contact' %}">Contact</a>
-        {% comment %} <a href="{% url 'questionnaire:dashboard' %}">Dashboard</a> {% endcomment %}
+        <a class="nav-link" href="{% url 'tracker_form' %}">Period Tracker</a>
+        {% if request.session.user_name %}
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+            <a class="nav-link" href="{% url 'logout' %}">Logout ({{ request.session.user_name }})</a>
+        {% else %}
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+        {% endif %}
     </div>
 
-</body>
-<script>
-    function openSidebar() {
-        document.getElementById("sidebar").style.width = "250px";
-    }
     
-    function closeSidebar() {
-        document.getElementById("sidebar").style.width = "0";
-    }
-</script>
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function openSidebar() {
+            document.getElementById("sidebar").style.width = "250px";
+        }
+
+        function closeSidebar() {
+            document.getElementById("sidebar").style.width = "0";
+        }
+    </script>
+</body>
 </html>
-{% block body %}{% endblock body %}
+{% block content %}{% endblock content %}

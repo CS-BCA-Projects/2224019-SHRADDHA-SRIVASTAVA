@@ -111,7 +111,7 @@
     </div>
     <div class="container">
         <h2>Login</h2>
-        <form method="POST">
+        <form method="POST" action="{% url 'login' %}?next={{ request.GET.next }}">
             {% csrf_token %}
             
             <label>Phone:</label>
