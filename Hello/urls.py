@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import views as auth_views
 
 admin.site.site_header = "Shraddha Admin"
 admin.site.site_title = "Shraddha Admin Portal"
@@ -29,4 +30,7 @@ urlpatterns = [
     path("", include("chatbot.urls")),
     path("questionnaire/", include('questionnaire.urls')),
     path('', include('myself.urls')),
+    path('tracker/', include('period_tracker.urls')),
+    path('login/', auth_views.LoginView.as_view(template_name='register/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

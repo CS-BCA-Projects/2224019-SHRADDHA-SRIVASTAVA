@@ -75,6 +75,7 @@ def logout_view(request):
 
 
 
+
 # from django.shortcuts import render, redirect
 # from .forms import RegistrationForm,  LoginForm
 # from pymongo import MongoClient

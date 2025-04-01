@@ -2,7 +2,7 @@
 
 {% block title %}Shraddha{% endblock title %}
 
-{% block body %}
+{% block content %}
 
 
 
@@ -24,21 +24,20 @@
         }
 
         .profile-link {
-            position: absolute;
-            top: 5%;
-            right: 20px;
-            transform: translateY(-50%);
             color: white;
             text-decoration: none;
             font-size: 18px;
             display: flex;
             align-items: center;
+            margin-right: 20px;
         }
 
-        .profile-link i {
-            margin-right: 5px;
+        .profile-link img {
+            width: 60px;
+            height: 60px;
+            margin-right: 0px;
         }
-    
+
         .header {
             background: #e91e63;
             padding: 20px;
@@ -46,7 +45,14 @@
             color: white;
             font-size: 24px;
             font-weight: bold;
-            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header span {
+            flex: 1;
+            text-align: center;
         }
 
         /* Carousel Styling */
@@ -168,8 +174,13 @@
 </head>
 <body>
 
-    <div class="header">Welcome to Your Personalized Sanitary Pad Guide</div>
-    <a href="{% url 'profile' %}?name={{ result_data.name }}">View Profile</a>   
+    <div class="header">
+        <span>Welcome to Your Personalized Sanitary Pad Guide</span>
+        <a href="{% url 'profile' %}?name={{ result_data.name }}" class="profile-link">
+            <img src="https://cdn-icons-png.flaticon.com/128/6997/6997662.png" alt="Profile Icon"> 
+        </a>
+    </div>
+
     
     
     <!-- Bootstrap Carousel -->
@@ -264,4 +275,4 @@
     
 </body>
 </html> 
-{% endblock body %}
+{% endblock content %}
