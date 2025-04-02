@@ -6,6 +6,7 @@ from .forms import PeriodTrackerForm
 from datetime import datetime, timedelta
 from twilio.rest import Client
 from django.conf import settings
+import random
 from twilio.base.exceptions import TwilioRestException
 
 def tracker_form(request):
@@ -17,7 +18,7 @@ def tracker_form(request):
 
     tracker = PeriodTracker.get_tracker(user_name)
     initial_data = tracker if tracker else {}
-    
+
     if request.method == 'POST':
         form = PeriodTrackerForm(request.POST)
         if form.is_valid():
@@ -40,28 +41,47 @@ def tracker_form(request):
                 try:
                     client = Client(settings.TWILIO_SID, settings.TWILIO_AUTH_TOKEN)
                     next_period = PeriodTracker.calculate_next_period(last_period_date, cycle_length)
-                    message = f"Period Tracker: Your next period is expected on {next_period}"
+
+                    # Motivational Messages
+                    quotes = [
+                        "Stay strong, you are amazing! 💖",
+                        "Your health is your wealth, take care of yourself! 🌸",
+                        "You are more powerful than you think! 💪",
+                        "Hydrate, nourish, and be kind to yourself! 💧",
+                        "You are doing great! Keep going. 🌟"
+                    ]
+                    quote_message = random.choice(quotes)
+
+                    # SMS Message
+                    message = f"Hi {user_name}, hope you're doing well! 💕 Your next period is expected on {next_period}. {quote_message}"
+
                     client.messages.create(
                         body=message,
                         from_=settings.TWILIO_PHONE,
                         to=f"+91{phone_number}" if not phone_number.startswith("+") else phone_number
-
                     )
-                    messages.success(request, "Tracking details saved and SMS sent!")
+
+                    messages.success(request, "Tracking details saved and SMS sent successfully! 📩")
+
                 except TwilioRestException as e:
-                    # Log the detailed error
-                    print(f"Twilio Error: {str(e)}")
-                    print(f"Error Code: {e.code}")
-                    print(f"Phone Number: {phone_number}")
-                    messages.warning(request, f"Tracking details saved, but SMS failed to send. Error: {str(e)}")
+                    messages.warning(request, f"Tracking details saved, but SMS failed: {str(e)}")
+
             else:
-                messages.success(request, "Tracking details saved successfully!")
-            
-            return redirect('tracker_form')
+                messages.success(request, "Tracking details saved successfully! ✅")
+
+            # ✅ Instead of redirecting, reload the form with a success message
+            form = PeriodTrackerForm(initial={
+                'last_period_date': last_period_date,
+                'cycle_length': cycle_length,
+                'phone_number': phone_number,
+                'sms_enabled': sms_enabled
+            })
+
     else:
         form = PeriodTrackerForm(initial=initial_data)
 
-    return render(request, 'tracker_form.html', {'form': form})
+    return render(request, 'tracker_form.html', {'form': form})  # ✅ Render the form instead of redirecting
+
 
 def send_period_reminders():
     """Send SMS reminders to users whose periods are approaching."""
