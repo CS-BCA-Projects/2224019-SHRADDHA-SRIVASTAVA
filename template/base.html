@@ -88,6 +88,7 @@
         <button class="close-btn" onclick="closeSidebar()">×</button>
         <a class="nav-link" href="{% url 'index' %}">Home</a>
         <a href="{% url 'register' %}">Registration</a>
+        <a href="{% url 'custom_admin_login' %}" class="admin-link">Admin Login</a>
         <a href="{% url 'contact' %}">Contact</a>
         <a class="nav-link" href="{% url 'tracker_form' %}">Period Tracker</a>
         {% if request.session.user_name %}

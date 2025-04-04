@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: url('https://images.unsplash.com/photo-1633370310558-be85bef97f09?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8OTd8T3pjTFdnS0F0V1V8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            width: 320px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .link-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            padding: 12px;
+            background-color: #00bcd4;
+            color: white;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: #0097a7;
+        }
+
+        .logout-btn {
+            background-color: #f44336;
+        }
+
+        .logout-btn:hover {
+            background-color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Custom Admin Dashboard</h2>
+
+        <div class="link-group">
+            <a href="{% url 'user_list' %}">Manage Users</a>
+            <a href="{% url 'contact_list' %}">Manage Contact Forms</a>
+            <a href="{% url 'custom_admin_logout' %}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
+
