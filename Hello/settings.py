@@ -150,6 +150,11 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env
 load_dotenv()
+# from decouple import config
+
+# TWILIO_SID = config('TWILIO_SID')
+# TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
+# TWILIO_PHONE = config('TWILIO_PHONE')
 
 TWILIO_SID = os.getenv("TWILIO_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
