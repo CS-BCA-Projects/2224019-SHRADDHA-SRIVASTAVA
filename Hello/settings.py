@@ -1,3 +1,4 @@
+
 """
 Django settings for Hello project.
 
@@ -11,8 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from pathlib import Path, os
 from django.contrib.messages import constants as messages
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -85,8 +87,7 @@ DATABASES = {
 
 from pymongo import MongoClient
 
-MONGO_URI = "mongodb+srv://shraddhasrivastva0:shraddha2003" \
-"@cluster0.xql6jwb.mongodb.net"
+MONGO_URI = os.getenv("MONGODB_URI")
 MONGO_DB_NAME = "stree_sewa_satkar"
 
 client = MongoClient(MONGO_URI)
@@ -102,7 +103,7 @@ MONGO_COLLECTIONS = {
     "period_tracker": db["period_tracker"],
 }
 
-GEMINI_API_KEY = "AIzaSyDpzZzwLbg7BhGGhmkZbtMmQdFyjAhedhE"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -147,10 +148,10 @@ SESSION_COOKIE_SAMESITE = 'Lax'  # Helps with CSRF and cross-site issues
 SESSION_SAVE_EVERY_REQUEST = True  # Update session on every request
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session active after browser close
 
-from dotenv import load_dotenv
+
 
 # Load environment variables from .env
-load_dotenv()
+
 # from decouple import config
 
 # TWILIO_SID = config('TWILIO_SID')
