@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from datetime import datetime
 from .models import Contact  # Import the Contact model
+from django.conf import settings
+
 
 def index(request):
     return render(request, "index.html")
@@ -35,6 +37,13 @@ def contact(request):
 
 
         
-
+def booklet_view(request):
+    return render(request, 'booklet.html')
 
   
+def fun_activity(request):
+    return render(request, 'fun_activity.html')
+
+
+def relaxing_games(request):
+    return render(request, 'relaxing_games.html')

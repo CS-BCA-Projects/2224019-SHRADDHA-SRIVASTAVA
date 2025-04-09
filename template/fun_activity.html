@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fun Activity - Relax & Rejuvenate</title>
+  <style>
+    body {
+      background-color: #ffe6f0;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 2rem;
+      color: #4a235a;
+    }
+    h1, h2 {
+      color: #6a1b9a;
+      margin-bottom: 0.5rem;
+    }
+    button, select {
+      background: #e040fb;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover, select:hover {
+      background-color: #ba68c8;
+    }
+    iframe {
+      border-radius: 10px;
+      margin-top: 1rem;
+    }
+    p {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌞 Your Positive Affirmation</h1>
+  <p>Click the button below!</p>
+  <button onclick="showAffirmation()">Show Affirmation</button>
+  <p id="affirmation"></p>
+
+  <hr/>
+
+  <h2>🎵 Relaxing Music Playlist</h2>
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/videoseries?list=PLWz5rJ2EKKc_XOgcRukW1lY7CNtIZtS3F"
+    title="Relaxing Music Playlist"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+  <p>If the playlist doesn't load, <a href="https://youtu.be/KpwAo52OTNU?si=aZijS762wNMVlZ3E" target="_blank">click here to open it on YouTube</a>.</p>
+
+  <hr/>
+
+  <h2>🎧 Mood-Based Music</h2>
+  <label for="moodSelect">Choose your mood:</label>
+  <select id="moodSelect" onchange="changeMoodMusic()">
+    <option value="https://www.youtube.com/embed/2OEL4P1Rz04">Calm</option>
+    <option value="https://www.youtube.com/embed/hHW1oY26kxQ">Happy</option>
+    <option value="https://www.youtube.com/embed/DWcJFNfaw9c">Motivated</option>
+    <option value="https://www.youtube.com/embed/lFcSrYw-ARY">Sleepy</option>
+    <option value="https://www.youtube.com/embed/Mk7-GRWq7wA">Focused</option>
+  </select>
+  <iframe id="moodPlayer" width="560" height="315"
+    src="https://www.youtube.com/embed/2OEL4P1Rz04"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+
+  <hr/>
+
+  <h2>😂 Fun Fact</h2>
+  <p>Feeling curious? Try this!</p>
+  <button onclick="getFunFact()">Get a Fun Fact</button>
+  <p id="funFact"></p>
+
+  <script>
+    const affirmations = [
+      "You are strong and capable.",
+      "Pain is temporary. Peace is coming.",
+      "You are allowed to rest.",
+      "This too shall pass.",
+      "You deserve love and care."
+    ];
+
+    const funFacts = [
+      "Did you know? Cramps can be eased with a warm water bottle!",
+      "Chocolate really can help boost your mood!",
+      "Laughing increases pain tolerance. Giggle more!",
+      "Listening to your favorite music reduces cortisol levels.",
+      "Bananas help with bloating and mood swings."
+    ];
+
+    function showAffirmation() {
+      const random = Math.floor(Math.random() * affirmations.length);
+      document.getElementById("affirmation").textContent = affirmations[random];
+    }
+
+    function getFunFact() {
+      const random = Math.floor(Math.random() * funFacts.length);
+      document.getElementById("funFact").textContent = funFacts[random];
+    }
+
+    function changeMoodMusic() {
+      const player = document.getElementById("moodPlayer");
+      const moodURL = document.getElementById("moodSelect").value;
+      player.src = moodURL + "?autoplay=1";
+    }
+  </script>
+</body>
+</html>
+

@@ -85,7 +85,8 @@ DATABASES = {
 
 from pymongo import MongoClient
 
-MONGO_URI = "mongodb://localhost:27017/"
+MONGO_URI = "mongodb+srv://shraddhasrivastva0:shraddha2003" \
+"@cluster0.xql6jwb.mongodb.net"
 MONGO_DB_NAME = "stree_sewa_satkar"
 
 client = MongoClient(MONGO_URI)
