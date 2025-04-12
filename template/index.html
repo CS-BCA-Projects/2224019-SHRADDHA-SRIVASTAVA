@@ -3,426 +3,435 @@
 {% block title %}Shraddha{% endblock title %}
 
 {% block content %}
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanitary Pad Recommendation</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: url('https://images.unsplash.com/photo-1508717272800-9fff97da7e8f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c2ltcGxlJTIwYmVhdXRpZnVsJTIwYmFja2dyb3VuZCUyMGltYWdlJTIwaW4lMjBsaWdodCUyMGNvbG91cnxlbnwwfHwwfHx8MA%3D%3D') no-repeat center center fixed;
-            background-size: cover;
-            background-color: #fce4ec;
-            color: #333;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: url('https://images.unsplash.com/photo-1508717272800-9fff97da7e8f?w=600&auto=format&fit=crop&q=60') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+    }
 
-        .profile-link {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
+    .header {
+        background: #e91e63;
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .profile-link img {
-            width: 60px;
-            height: 60px;
-            margin-right: 0px;
-        }
+    .header span {
+        font-size: 24px;
+        font-weight: bold;
+        flex-grow: 1;
+        text-align: center;
+    }
 
-        .header {
-            background: #e91e63;
-            padding: 20px;
-            text-align: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    .profile-link img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+    }
+
+    .carousel-container {
+        max-width: 100%;
+        margin: 20px auto;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .carousel-inner img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+    }
+
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .services-container {
+        text-align: center;
+        padding: 5px 20px;
+    }
+
+    .services-container h2 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .services-container h2::after {
+        content: "";
+        width: 50px;
+        height: 4px;
+        background: #d63384;
+        display: block;
+        margin: 10px auto 0;
+    }
+
+    .services-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .service-box {
+        background: white;
+        width: 250px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .service-box:hover {
+        background: #ffbadd;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .service-box .icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+        color: #d63384;
+    }
+
+    .service-box:hover .icon {
+        color: white;
+    }
+
+    .products {
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 20px;
+        background: #e91e63;
+        color: white;
+        font-weight: bold;
+    }
+
+    @media screen and (max-width: 768px) {
+        .carousel-inner img {
+            height: 250px;
         }
 
         .header span {
-            flex: 1;
-            text-align: center;
-        }
-
-        /* Carousel Styling */
-        .carousel-container {
-            width: 100%;
-            height: 500px;
-            margin: auto;
-            margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            
-        }
-
-        .carousel-inner img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-        }
-
-        .carousel-caption {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .carousel-caption h5 {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .carousel-caption .btn {
-            margin: 5px;
-            font-size: 16px;
-        }
-
-        /* Cards Section */
-        .container {
-            width: 90%;
-            margin: 40px auto;
-            padding: 40px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h3 {
-            color: #d63384;
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .product-card {
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
+            font-size: 18px;
         }
 
         .product-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            height: 160px;
         }
-
-        .product-card h3 {
-            font-size: 20px;
-            color: #e91e63;
-            margin-bottom: 10px;
+    }
+    /* Core Section Style */
+    .entertainment-zone {
+        background: linear-gradient(to right, #fff1f8, #f0f7ff);
+        padding: 50px 20px;
+        text-align: center;
+        margin-top: -70px;
+    }
+    
+    .entertainment-heading h2 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: #ff4081;
+    }
+    
+    .entertainment-heading p {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 40px;
+    }
+    
+    .entertainment-container {
+        display: flex;
+        flex-wrap: wrap; /* Remove or set to nowrap to force in one row */
+        justify-content: space-around;
+        align-items: stretch;
+        gap: 20px;
+        padding: 20px;
+        flex-direction: row;
+      }
+      
+      .entertainment-card {
+        flex: 0 1 22%; /* Approx 4 cards per row with some spacing */
+        min-width: 200px;
+        max-width: 300px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+    
+    .entertainment-card.animate-visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    /* 🔥 Custom Animations */
+    
+    /* Fade Up */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1s ease forwards;
+    }
+    @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        .product-card p {
-            font-size: 14px;
-            color: #555;
+    }
+    
+    /* Zoom + Slide Combo */
+    .zoom-slide {
+        animation: zoomSlide 1.3s ease forwards;
+    }
+    @keyframes zoomSlide {
+        0% {
+            opacity: 0;
+            transform: scale(0.5) translateY(50px);
         }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: #e91e63;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .carousel-inner img {
-                height: 350px;
-            }
+    }
+    
+    /* Bounce In Left */
+    .bounce-in-left {
+        animation: bounceInLeft 1.2s ease-out forwards;
+    }
+    @keyframes bounceInLeft {
+        0% {
+            transform: translateX(-300px);
+            opacity: 0;
         }
-
-        @media (max-width: 576px) {
-            .carousel-inner img {
-                height: 280px;
-            }
+        60% {
+            transform: translateX(25px);
+            opacity: 1;
         }
-
-        /* Services Container */
-            .services-container {
-                text-align: center;
-                padding: 50px 20px;
-                background: transparent;
-            }
-        
-            .services-container h2 {
-                font-size: 36px;
-                font-weight: bold;
-                color: #333;
-                position: relative;
-                display: inline-block;
-            }
-        
-            .services-container h2::after {
-                content: "";
-                width: 50px;
-                height: 4px;
-                background: #d63384;
-                display: block;
-                margin: 8px auto 0;
-            }
-        
-            .services-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-                margin-top: 30px;
-                justify-content: center;
-            }
-        
-            /* Service Box */
-            .service-box {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-                cursor: pointer;
-                position: relative;
-            }
-        
-            .service-box .icon {
-                font-size: 40px;
-                color: #d63384;
-                margin-bottom: 10px;
-            }
-        
-            .service-box h3 {
-                font-size: 22px;
-                font-weight: bold;
-                color: #333;
-            }
-        
-            .service-box p {
-                font-size: 16px;
-                color: #666;
-                line-height: 1.5;
-            }
-        
-            /* Hover Effects */
-            .service-box:hover {
-                background:rgb(255, 188, 222);
-                color: white;
-                transform: scale(1.05);
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            }
-        
-            .service-box:hover .icon,
-            .service-box:hover h3 {
-                color: white;
-            }
-        
-            /* Animations */
-            .service-box {
-                opacity: 0;
-                transform: translateY(50px);
-                transition: all 0.6s ease-in-out;
-            }
-        
-            .service-box.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        
+        80% {
+            transform: translateX(-10px);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+    
+    /* Bounce In Right */
+    .bounce-in-right {
+        animation: bounceInRight 1.2s ease-out forwards;
+    }
+    @keyframes bounceInRight {
+        0% {
+            transform: translateX(300px);
+            opacity: 0;
+        }
+        60% {
+            transform: translateX(-25px);
+            opacity: 1;
+        }
+        80% {
+            transform: translateX(10px);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+    
+    /* Button Hover */
+    .btn {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+        .entertainment-container {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    
+    
 </style>
-</head>
-<body>
 
-    <div class="header">
-        <span>Welcome to Your Personalized Sanitary Pad Guide</span>
-        <a href="{% url 'profile' %}?name={{ result_data.name }}" class="profile-link">
-            <img src="https://cdn-icons-png.flaticon.com/128/6997/6997662.png" alt="Profile Icon"> 
-        </a>
+<!-- Header -->
+<div class="header">
+    <span>Welcome to Your Personalized Sanitary Pad Guide</span>
+    <a href="{% url 'profile' %}?name={{ result_data.name }}" class="profile-link">
+        <img src="https://cdn-icons-png.flaticon.com/128/6997/6997662.png" alt="Profile Icon">
+    </a>
+</div>
+
+<!-- Carousel -->
+<div id="carouselExampleIndicators" class="carousel slide carousel-container" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
     </div>
-
-    
-    
-    <!-- Bootstrap Carousel -->
-    <div id="carouselExampleIndicators" class="carousel slide carousel-container" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://plus.unsplash.com/premium_photo-1661573742366-5b83baca6671" class="d-block w-100" alt="Slide 1">
+            <div class="carousel-caption">
+                <h5>Personalized Sanitary Pad Guide</h5>
+                <a href="/login" class="btn btn-light">Login</a>
+                <a href="/chatbot" class="btn btn-success">Chat with AI</a>
+                <a href="/questionnaire" class="btn btn-primary">Find My Pad</a>
+            </div>
         </div>
-        
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://plus.unsplash.com/premium_photo-1661573742366-5b83baca6671?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyaW9kfGVufDB8fDB8fHww" alt="Slide 1">
-                <div class="carousel-caption">
-                    <h5>Personalized Sanitary Pad Guide</h5>
-                    <a href="/login" class="btn btn-primary">Login</a>
-                    <a href="/chatbot" class="btn btn-success">Chat with AI</a>
-                    <a href="/questionnaire" class="btn btn-primary">Find My Pad</a>
-
-                </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1589395937921-fddc324ccdd2" class="d-block w-100" alt="Slide 2">
+            <div class="carousel-caption">
+                <h5>AI Chatbot Assistance</h5>
+                <a href="/login" class="btn btn-light">Login</a>
+                <a href="/chatbot" class="btn btn-success">Chat with AI</a>
+                <a href="/questionnaire" class="btn btn-primary">Find My Pad</a>
             </div>
-            <div class="carousel-item">
-                <img src="https://images.unsplash.com/photo-1589395937921-fddc324ccdd2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FuaXRhcnklMjBuYXBraW58ZW58MHx8MHx8fDA%3D" alt="Slide 2">
-                <div class="carousel-caption">
-                    <h5>AI Chatbot Assistance</h5>
-                    <a href="/login" class="btn btn-primary">Login</a>
-                    <a href="/chatbot" class="btn btn-success">Chat with AI</a>
-                    <a href="/questionnaire" class="btn btn-primary">Find My Pad</a>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="https://cdn.vectorstock.com/i/500p/19/91/woman-period-menstruation-calendar-shedule-vector-40621991.jpg" alt="Slide 3">
-                <div class="carousel-caption">
-                    <h5>Stay Confident & Comfortable</h5>
-                    <a href="/login" class="btn btn-primary">Login</a>
-                    <a href="/chatbot" class="btn btn-success">Chat with AI</a>
-                    <a href="/questionnaire" class="btn btn-primary">Find My Pad</a>
-                </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://cdn.vectorstock.com/i/500p/19/91/woman-period-menstruation-calendar-shedule-vector-40621991.jpg" class="d-block w-100" alt="Slide 3">
+            <div class="carousel-caption">
+                <h5>Stay Confident & Comfortable</h5>
+                <a href="/login" class="btn btn-light">Login</a>
+                <a href="/chatbot" class="btn btn-success">Chat with AI</a>
+                <a href="/questionnaire" class="btn btn-primary">Find My Pad</a>
             </div>
         </div>
     </div>
+</div>
 
-
-  <!-- Our Services Section -->
+<!-- Services Section -->
 <section class="services-container">
     <h2>About Us</h2>
     <p>Explore the features we offer to support your menstrual health and well-being.</p>
     <div class="services-grid">
-        <!-- Find My Pad -->
         <div class="service-box">
             <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
             <h3>Find My Pad</h3>
-            <p>Based on your skin type recommended pad suggested to you with other necessecity to maintain your hygiene during your red tide weeks.</p>
+            <p>Recommended pad based on your skin type to maintain hygiene during your cycle.</p>
         </div>
-
-        <!-- Period Tracker -->
         <div class="service-box">
             <div class="icon"><i class="fas fa-calendar-alt"></i></div>
             <h3>Period Tracker</h3>
-            <p>Track your menstrual cycle, predict your next period, and receive timely notifications to be early aware for your menses.</p>
+            <p>Predict your cycle and receive timely reminders.</p>
         </div>
-
-        <!-- Medical Chatbot -->
         <div class="service-box">
             <div class="icon"><i class="fas fa-comments-medical"></i></div>
             <h3>Medical Chatbot</h3>
-            <p>Get instant, AI-driven responses to your health queries and personalized period care advice, now ask you unspoken problems from your comfort zone.</p>
+            <p>Get instant AI-driven responses for your health concerns.</p>
         </div>
-
-        <!-- Future Scope -->
         <div class="service-box">
             <div class="icon"><i class="fas fa-lightbulb"></i></div>
             <h3>Future Scope</h3>
-            <p>We are constantly innovating to bring more features that enhance women's health and convenience.
-                Your health our priority.
-            </p>
+            <p>We're adding more features to prioritize women’s health.</p>
         </div>
     </div>
 </section>
 
-    <!-- Product Cards -->
-    <div class="container">
-        <h3>Sanitary Napkins & Their Details</h3>
-        <div class="products">
-            <!-- Row 1 -->
-            <div class="product-card">
-                <h3>Ultra Thin Pads</h3>
-                
-                <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQzz85uEtGBFAJLOF_vd84_-D389eXTfwD5foTEPQQ0lhSENkCXEw4Re0PWzWbQal7uYZ1NXZqsIvEw1FNpC9Wc8NjZ7aQIdsHG0dRfJF2du-rRWduuNUor" alt="Ultra Thin Pads">
-                <p>Maximum comfort and absorption.</p>
-            </div>
-            <div class="product-card">
-                
-                <h3>Organic Pads</h3>
-                <img src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ6ue5aF94yNJ5Ko16h3Y_0h1eULK5mdAQxzGxFwTbV14ZYZ0UIYQvM1o3BUrmDqUzvyU0nLjwwLQUxVwxwxTqrc8HqPmm7xJKwW5oIZVbfOLzCn_ooRNS4qbE" alt="Organic Pads">
-                <p>Made from natural, eco-friendly materials.</p>
-            </div>
-            <div class="product-card">
-                
-                <h3>Overnight Pads</h3>
-                <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRTtDzV3ccWOE6Hcnkx_AfKwmVgTSc0vhTo8VBqpLtUZRersxgEt6c64EgHpVzfFYfUI8eENGWRZqG_4lcC8uBHgxHvKnQSsZwJXOC6mslyhY_zkRcbR-mSPA" alt="Overnight Pads">
-                <p>Extra long protection for night use.</p>
-            </div>
-
-            <!-- Row 2 -->
-            <div class="product-card">
-                
-                <h3>Panty Liners</h3>
-                <img src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSrpd3Wv4kd1y9KePxXeW-qbC-q1HuET7hml8Pe77A0Z2sQGSua1JpiCNSAYZXrXneVJ_gUO0B7mDSfB21Elm9-ngs8f0S4yu0IHYNIPr5pCzvHSSB-qfV81w" alt="Panty Liners">
-                <p>Light protection for daily freshness.</p>
-            </div>
-            <div class="product-card">
-                
-                <h3>Reusable Cloth Pads</h3>
-                <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRsZZe3JVO6XhMAcHAy0IH5Y9jgzijcyXdUyVoSJsYiTHkMY_db8_KBZqH6Sf_SP8qvIBpU3q9ceC3QPVpMeSBPioYPJsZ-jrTFAYUoxVI" alt="Reusable Cloth Pads">
-                <p>Washable, eco-friendly alternative.</p>
-            </div>
-            <div class="product-card">
-                
-                <h3>Biodegradable Pads</h3>
-                <img src="https://images.meesho.com/images/products/370001501/e9bji_512.webp" alt="Biodegradable Pads">
-                <p>Sustainable and planet-friendly.</p>
-            </div>
-        </div>
+<!-- Product Cards -->
+<div class="products">
+    {% for product in products %}
+    <div class="product-card">
+        <h3>{{ product.title }}</h3>
+        <img src="{{ product.image_url }}" alt="{{ product.title }}">
+        <p>{{ product.description }}</p>
     </div>
+    {% endfor %}
+</div>
 
-    <div class="footer">&copy; 2025 YourWebsite | Caring for Your Comfort & Health</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- JavaScript for Scroll Animation -->
-    <!-- JavaScript for Scroll Animation -->
+<!-- Entertainment Zone -->
+
+<section class="entertainment-zone" id="fun-zone">
+    <div class="entertainment-heading">
+      <h2 class="fade-up">🌸 Entertainment Zone</h2>
+      <p class="fade-up">Your comfort space – let's play and vibe to some chill music 🎧</p>
+    </div>
+    <div class="entertainment-container">
+      <div class="entertainment-card zoom-slide bounce-in-left">
+        <h2>🎮 Fun Gaming Area</h2>
+        <p>Interactive games to lift your mood and relieve stress during your tough days.</p>
+        <a href="{% url 'relaxing_games' %}" class="btn btn-danger">Play Now</a>
+      </div>
+      
+      <div class="entertainment-card zoom-slide bounce-in-right">
+        <h2>🎵 Soothing Music</h2>
+        <p>Healing frequencies and relaxing tunes to ease pain and calm the mind.</p>
+        <a href="{% url 'fun_activity' %}" class="btn btn-success">Listen Now</a>
+      </div>
+  
+      <div class="entertainment-card zoom-slide bounce-in-right">
+        <h2>💗 Feeling Low? Move a Little</h2>
+        <p>Specially suggested exercises for when you're not feeling your best – gentle and healing.</p>
+        <a href="{% url 'exercise' %}" class="btn btn-warning">Explore Suggestions</a>
+      </div>
+    </div>
+  </section>
+  
+  
+<!-- Footer -->
+<div class="footer">© 2025 Stree Seva Satkar – All Rights Reserved</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const serviceBoxes = document.querySelectorAll(".service-box");
-        
-        function revealServices() {
-            const triggerBottom = window.innerHeight / 1.2;
-            
-            serviceBoxes.forEach((box) => {
-                const boxTop = box.getBoundingClientRect().top;
-                if (boxTop < triggerBottom) {
-                    box.classList.add("visible");
-                }
-            });
+    const allElements = document.querySelectorAll('.entertainment-card, .fade-up');
+  
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-visible');
+          observer.unobserve(entry.target);
         }
-
-        window.addEventListener("scroll", revealServices);
-        revealServices();
-    });
-</script>
-    
-    
-</body>
-</html> 
+      });
+    }, { threshold: 0.2 });
+  
+    allElements.forEach(el => observer.observe(el));
+  </script>
+  
+  
+  
 {% endblock content %}

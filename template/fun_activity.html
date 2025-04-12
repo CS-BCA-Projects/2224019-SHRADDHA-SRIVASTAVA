@@ -3,118 +3,383 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fun Activity - Relax & Rejuvenate</title>
+  <title>Music Mood</title>
   <style>
+    :root {
+      --bg-light: #ffe6f0;
+      --bg-dark: #1a1a2e;
+      --text-light: #333;
+      --text-dark: #eee;
+      --card-bg: #222;
+    }
+
     body {
-      background-color: #ffe6f0;
+      margin: 0;
+      padding: 20px;
       font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s, color 0.3s;
+      position: relative;
+    }
+
+    h1 {
       text-align: center;
-      padding: 2rem;
-      color: #4a235a;
+      color: #8e24aa;
+      margin-bottom: 10px;
     }
-    h1, h2 {
-      color: #6a1b9a;
-      margin-bottom: 0.5rem;
+
+    .notify {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 15px;
+      color: #ff1493;
+      font-weight: bold;
     }
-    button, select {
-      background: #e040fb;
+
+    .theme-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: #8e24aa;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .switch-label {
+      background-color: #ccc;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-block;
+      height: 26px;
+      position: relative;
+      width: 50px;
+      margin-left: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .switch-label::after {
+      content: "";
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      height: 22px;
+      width: 22px;
+      transition: transform 0.3s;
+    }
+
+    .theme-switch input:checked + .switch-label {
+      background-color: #8e24aa;
+    }
+
+    .theme-switch input:checked + .switch-label::after {
+      transform: translateX(24px);
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .category-button {
+      background-color: #da70d6;
       color: white;
       border: none;
+      border-radius: 20px;
       padding: 10px 20px;
-      margin: 10px;
-      border-radius: 10px;
-      font-size: 1rem;
+      margin: 5px;
       cursor: pointer;
-      transition: 0.3s;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
-    button:hover, select:hover {
-      background-color: #ba68c8;
+
+    .category-button:hover {
+      background-color: #c155c1;
     }
-    iframe {
-      border-radius: 10px;
-      margin-top: 1rem;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      padding: 10px 20px 40px;
     }
-    p {
-      margin: 0.5rem 0;
+
+    @media (max-width: 992px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .video-card {
+      background-color: var(--card-bg);
+      color: white;
+      aspect-ratio: 1 / 1;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s;
+      overflow: hidden;
+    }
+
+    .video-card:hover {
+      transform: scale(1.02);
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 60%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .video-card p {
+      font-size: 13px;
+      margin: 5px 0;
+      flex-grow: 1;
+    }
+
+    .buttons {
+      margin-top: auto;
+    }
+
+    .play, .stop {
+      padding: 6px 14px;
+      margin: 4px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .play {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .stop {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .volume-slider {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+    }
+
+    .custom-playlist {
+      text-align: center;
+      margin-top: 40px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #8e24aa;
     }
   </style>
 </head>
 <body>
-  <h1>🌞 Your Positive Affirmation</h1>
-  <p>Click the button below!</p>
-  <button onclick="showAffirmation()">Show Affirmation</button>
-  <p id="affirmation"></p>
+  <div id="particles-js"></div>
 
-  <hr/>
+  <div class="theme-switch">
+    Theme
+    <input type="checkbox" id="toggle-theme" />
+    <label class="switch-label" for="toggle-theme"></label>
+  </div>
 
-  <h2>🎵 Relaxing Music Playlist</h2>
-  <iframe width="560" height="315"
-    src="https://www.youtube.com/embed/videoseries?list=PLWz5rJ2EKKc_XOgcRukW1lY7CNtIZtS3F"
-    title="Relaxing Music Playlist"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-  <p>If the playlist doesn't load, <a href="https://youtu.be/KpwAo52OTNU?si=aZijS762wNMVlZ3E" target="_blank">click here to open it on YouTube</a>.</p>
+  <h1>Music Mood Player</h1>
+  <div class="notify">🎧 Use earphones for better experience!</div>
 
-  <hr/>
+  <div class="categories">
+    <button class="category-button" onclick="loadMusic('relaxing music')">Relaxing</button>
+    <button class="category-button" onclick="loadMusic('healing music')">Healing</button>
+    <button class="category-button" onclick="loadMusic('rain sounds')">Rain Sounds</button>
+    <button class="category-button" onclick="loadMusic('sleep music')">Sleep</button>
+    <button class="category-button" onclick="loadMusic('focus music')">Focus</button>
+    <button class="category-button" onclick="loadMusic('lofi beats')">Lofi</button>
+    <button class="category-button" onclick="loadMusic('study beats')">Study Beats</button>
+    
+    <button class="category-button" onclick="loadMusic('african chill')">African Chill</button>
+  </div>
 
-  <h2>🎧 Mood-Based Music</h2>
-  <label for="moodSelect">Choose your mood:</label>
-  <select id="moodSelect" onchange="changeMoodMusic()">
-    <option value="https://www.youtube.com/embed/2OEL4P1Rz04">Calm</option>
-    <option value="https://www.youtube.com/embed/hHW1oY26kxQ">Happy</option>
-    <option value="https://www.youtube.com/embed/DWcJFNfaw9c">Motivated</option>
-    <option value="https://www.youtube.com/embed/lFcSrYw-ARY">Sleepy</option>
-    <option value="https://www.youtube.com/embed/Mk7-GRWq7wA">Focused</option>
-  </select>
-  <iframe id="moodPlayer" width="560" height="315"
-    src="https://www.youtube.com/embed/2OEL4P1Rz04"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
+  <div class="grid" id="music-container"></div>
 
-  <hr/>
+  <div class="custom-playlist">🎵 Your Custom Playlist Coming Soon...</div>
 
-  <h2>😂 Fun Fact</h2>
-  <p>Feeling curious? Try this!</p>
-  <button onclick="getFunFact()">Get a Fun Fact</button>
-  <p id="funFact"></p>
+  <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
-    const affirmations = [
-      "You are strong and capable.",
-      "Pain is temporary. Peace is coming.",
-      "You are allowed to rest.",
-      "This too shall pass.",
-      "You deserve love and care."
-    ];
+    const API_KEY = 'AIzaSyDQFRdPwb3j2NSyS9W9jM5tD4fqSh8UlkI'; // Replace this with your API key
+    let ytPlayers = {};
+    let currentVideoId = null;
 
-    const funFacts = [
-      "Did you know? Cramps can be eased with a warm water bottle!",
-      "Chocolate really can help boost your mood!",
-      "Laughing increases pain tolerance. Giggle more!",
-      "Listening to your favorite music reduces cortisol levels.",
-      "Bananas help with bloating and mood swings."
-    ];
+    function loadMusic(query) {
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(query)}&key=${API_KEY}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById('music-container');
+          container.innerHTML = '';
 
-    function showAffirmation() {
-      const random = Math.floor(Math.random() * affirmations.length);
-      document.getElementById("affirmation").textContent = affirmations[random];
+          data.items.forEach(item => {
+            const videoId = item.id.videoId;
+            const title = item.snippet.title;
+            const thumbnail = item.snippet.thumbnails.medium.url;
+
+            const card = document.createElement('div');
+            card.className = 'video-card';
+
+            const img = document.createElement('img');
+            img.src = thumbnail;
+            img.alt = title;
+            img.className = 'thumbnail';
+
+            const titleEl = document.createElement('p');
+            titleEl.textContent = title;
+
+            const iframe = document.createElement('div');
+            iframe.id = `player-${videoId}`;
+            iframe.style.display = 'none';
+
+            const buttons = document.createElement('div');
+            buttons.className = 'buttons';
+
+            const playBtn = document.createElement('button');
+            playBtn.textContent = 'Play';
+            playBtn.className = 'play';
+            playBtn.onclick = () => {
+              if (currentVideoId && currentVideoId !== videoId) {
+                stopVideo(currentVideoId);
+              }
+              currentVideoId = videoId;
+              ytPlayers[videoId].playVideo();
+            };
+
+            const stopBtn = document.createElement('button');
+            stopBtn.textContent = 'Stop';
+            stopBtn.className = 'stop';
+            stopBtn.onclick = () => {
+              stopVideo(videoId);
+            };
+
+            const volumeSlider = document.createElement('input');
+            volumeSlider.type = 'range';
+            volumeSlider.min = 0;
+            volumeSlider.max = 100;
+            volumeSlider.value = 50;
+            volumeSlider.className = 'volume-slider';
+            volumeSlider.oninput = () => {
+              ytPlayers[videoId].setVolume(volumeSlider.value);
+            };
+
+            buttons.appendChild(playBtn);
+            buttons.appendChild(stopBtn);
+            buttons.appendChild(volumeSlider);
+
+            card.appendChild(img);
+            card.appendChild(titleEl);
+            card.appendChild(buttons);
+            card.appendChild(iframe);
+
+            container.appendChild(card);
+          });
+
+          setTimeout(() => {
+            data.items.forEach(item => {
+              const videoId = item.id.videoId;
+              ytPlayers[videoId] = new YT.Player(`player-${videoId}`, {
+                height: '0',
+                width: '0',
+                videoId: videoId,
+                playerVars: {
+                  autoplay: 0,
+                  controls: 0,
+                  modestbranding: 1,
+                  rel: 0,
+                  showinfo: 0,
+                },
+                events: {
+                  onReady: (event) => event.target.setVolume(50),
+                }
+              });
+            });
+          }, 1000);
+        });
     }
 
-    function getFunFact() {
-      const random = Math.floor(Math.random() * funFacts.length);
-      document.getElementById("funFact").textContent = funFacts[random];
+    function stopVideo(id) {
+      if (ytPlayers[id]) {
+        ytPlayers[id].stopVideo();
+      }
     }
 
-    function changeMoodMusic() {
-      const player = document.getElementById("moodPlayer");
-      const moodURL = document.getElementById("moodSelect").value;
-      player.src = moodURL + "?autoplay=1";
-    }
+    function onYouTubeIframeAPIReady() {}
+
+    document.getElementById('toggle-theme').addEventListener('change', function () {
+      const isDark = this.checked;
+      document.body.style.background = isDark ? 'var(--bg-dark)' : 'var(--bg-light)';
+      document.body.style.color = isDark ? 'var(--text-dark)' : 'var(--text-light)';
+    });
+
+    const particlesScript = document.createElement('script');
+    particlesScript.src = "https://cdn.jsdelivr.net/npm/particles.js";
+    particlesScript.onload = () => {
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 50 },
+          color: { value: "#da70d6" },
+          shape: { type: "circle" },
+          opacity: { value: 0.3 },
+          size: { value: 3 },
+          move: { enable: true, speed: 2 }
+        }
+      });
+    };
+    document.body.appendChild(particlesScript);
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

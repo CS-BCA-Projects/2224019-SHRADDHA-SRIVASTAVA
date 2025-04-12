@@ -1,149 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Relaxing Games</title>
-  <style>
-    body {
-      background-color: #e0f7fa;
-      font-family: 'Segoe UI', sans-serif;
-      color: #004d40;
-      text-align: center;
-      padding: 2rem;
-    }
-    h1 {
-      color: #00796b;
-    }
-    section {
-      margin: 2rem 0;
-      padding: 1rem;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .bubble {
-      width: 40px;
-      height: 40px;
-      background: #b2ebf2;
-      border-radius: 50%;
-      display: inline-block;
-      margin: 10px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .bubble:active {
-      transform: scale(0.7);
-      background: #4dd0e1;
-    }
-    #breathing-box {
-      width: 100px;
-      height: 100px;
-      margin: 2rem auto;
-      background-color: #b2dfdb;
-      border-radius: 12px;
-      animation: breathe 8s infinite;
-    }
-    @keyframes breathe {
-      0% { transform: scale(1); }
-      25% { transform: scale(1.3); }
-      50% { transform: scale(1); }
-      75% { transform: scale(0.7); }
-      100% { transform: scale(1); }
-    }
-    #memory-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 60px);
-      gap: 10px;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-    .card {
-      width: 60px;
-      height: 60px;
-      background: #a7ffeb;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      cursor: pointer;
-      color: transparent;
-      user-select: none;
-    }
-    .card.revealed {
-      background: #1de9b6;
-      color: #004d40;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameZone - Relax & Play</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 40px 0;
+            font-size: clamp(2em, 5vw, 3.5em);
+            color: #00e6ff;
+            text-shadow: 0 0 15px rgba(0, 230, 255, 0.7);
+            animation: calmPulse 4s infinite ease-in-out;
+        }
+
+        @keyframes calmPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .game-box {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 230, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 230, 255, 0.2), transparent);
+            transition: 0.6s;
+        }
+
+        .game-box:hover::before {
+            left: 100%;
+        }
+
+        .game-box:hover {
+            transform: translateY(-15px);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+            box-shadow: 0 10px 30px rgba(0, 230, 255, 0.4);
+        }
+
+        .game-box h3 {
+            color: #00e6ff;
+            margin-bottom: 10px;
+            font-size: clamp(1em, 3vw, 1.6em);
+            text-shadow: 0 0 5px rgba(0, 230, 255, 0.5);
+        }
+
+        .game-box p {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .game-box img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .game-box:hover img {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a3a, #2a2a4a);
+            padding: 35px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 230, 255, 0.3);
+            overflow: hidden;
+            max-height: 95vh;
+            transform: translateY(50px);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .close, .replay {
+            font-size: 28px;
+            cursor: pointer;
+            color: #00e6ff;
+            background: none;
+            border: none;
+            padding: 8px;
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+
+        .close {
+            top: 15px;
+            right: 20px;
+        }
+
+        .replay {
+            top: 15px;
+            right: 60px;
+            font-size: 24px;
+        }
+
+        .close:hover, .replay:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .score-board {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, rgba(0, 230, 255, 0.2), rgba(0, 230, 255, 0.1));
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 230, 255, 0.3);
+            z-index: 1001;
+            box-shadow: 0 0 20px rgba(0, 230, 255, 0.2);
+        }
+
+        #game-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-size: 1em;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px rgba(0, 230, 255, 0.1);
+        }
+
+        iframe {
+            border: none;
+            border-radius: 15px;
+            width: 100%;
+            height: 600px;
+            box-shadow: 0 0 20px rgba(0, 230, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        iframe:hover {
+            transform: scale(1.02);
+        }
+
+        .loading {
+            font-size: 1.2em;
+            color: #00e6ff;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+
+        .game-board {
+            display: grid;
+            gap: 10px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(0, 230, 255, 0.3);
+            border-radius: 8px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cell:hover {
+            background: rgba(0, 230, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            .game-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+            iframe {
+                height: 400px;
+            }
+            .game-box img {
+                height: 100px;
+            }
+            .cell {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="container">
+        <h1>GameZone - Unwind & Play</h1>
+        <div class="score-board">
+            <h3>Relaxation Points: <span id="score">0</span></h3>
+        </div>
+        <div class="game-grid" id="gameGrid"></div>
+    </div>
 
-  <h1>🎮 Relaxing Games Zone</h1>
-  <p>Take a break, breathe, and enjoy these relaxing games!</p>
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeGame()">×</button>
+            <button class="replay" onclick="replayGame()">↻</button>
+            <h2 id="gameTitle"></h2>
+            <div id="game-area">
+                <p class="instructions">Loading your game... Sit back and relax!</p>
+            </div>
+        </div>
+    </div>
 
-  <section>
-    <h2>🎈 Bubble Pop Game</h2>
-    <p>Click the bubbles to pop and relax!</p>
-    <div id="bubble-container"></div>
-  </section>
+    <script>
+        let score = 0;
+        let currentGame = null;
+        const modal = document.getElementById('gameModal');
+        const gameArea = document.getElementById('game-area');
+        const gameTitle = document.getElementById('gameTitle');
+        const scoreDisplay = document.getElementById('score');
+        const gameGrid = document.getElementById('gameGrid');
 
-  <section>
-    <h2>🌬️ Breathing Box</h2>
-    <p>Breathe in as it expands, breathe out as it contracts.</p>
-    <div id="breathing-box"></div>
-  </section>
+        // Local fallback games
+        const localGames = [
+            { id: 1, title: 'Tic-Tac-Toe', description: 'Play X vs O to unwind!', image: 'https://via.placeholder.com/200x150?text=Tic-Tac-Toe', type: 'local' },
+            { id: 2, title: 'Memory Match', description: 'Match pairs for calm focus!', image: 'https://via.placeholder.com/200x150?text=Memory', type: 'local' }
+        ];
 
-  <section>
-    <h2>🧠 Memory Match</h2>
-    <p>Match the emojis! Refresh the page to restart.</p>
-    <div id="memory-grid"></div>
-  </section>
-
-  <script>
-    // Bubble Pop
-    const bubbleContainer = document.getElementById('bubble-container');
-    for (let i = 0; i < 20; i++) {
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.addEventListener('click', () => bubble.remove());
-      bubbleContainer.appendChild(bubble);
-    }
-
-    // Memory Game
-    const emojis = ['😊','🌸','💖','🍀','🎵','🌈','🌻','✨'];
-    const cards = [...emojis, ...emojis].sort(() => 0.5 - Math.random());
-    const memoryGrid = document.getElementById('memory-grid');
-    let firstCard = null, secondCard = null, lock = false;
-
-    cards.forEach((emoji, i) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.dataset.emoji = emoji;
-      card.innerText = emoji;
-      card.addEventListener('click', () => {
-        if (lock || card.classList.contains('revealed')) return;
-        card.classList.add('revealed');
-        if (!firstCard) {
-          firstCard = card;
-        } else {
-          secondCard = card;
-          lock = true;
-          if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
-            firstCard = secondCard = null;
-            lock = false;
-          } else {
-            setTimeout(() => {
-              firstCard.classList.remove('revealed');
-              secondCard.classList.remove('revealed');
-              firstCard = secondCard = null;
-              lock = false;
-            }, 800);
-          }
+        // Fetch games from FreeToGame API with retry
+        async function fetchGames(retries = 3) {
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                try {
+                    const response = await fetch('https://www.freetogame.com/api/games?platform=browser', {
+                        mode: 'cors'
+                    });
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const games = await response.json();
+                    displayGames(games.slice(0, 10)); // Limit to 10 games
+                    return;
+                } catch (error) {
+                    console.error(`Attempt ${attempt} failed:`, error);
+                    if (attempt === retries) {
+                        console.log('Falling back to local games');
+                        displayGames(localGames);
+                    }
+                }
+            }
         }
-      });
-      memoryGrid.appendChild(card);
-    });
-  </script>
+
+        function displayGames(games) {
+            gameGrid.innerHTML = '';
+            games.forEach(game => {
+                const gameBox = document.createElement('div');
+                gameBox.className = 'game-box';
+                gameBox.innerHTML = `
+                    <h3>${game.title}</h3>
+                    <p>${game.description}</p>
+                    <img src="${game.image || game.thumbnail || 'https://via.placeholder.com/200x150?text=No+Image'}" alt="${game.title}">
+                `;
+                gameBox.onclick = () => {
+                    if (game.type === 'local') {
+                        openLocalGame(game.id);
+                    } else {
+                        openGame(game.title, game.game_url);
+                    }
+                };
+                gameGrid.appendChild(gameBox);
+            });
+        }
+
+        function openGame(title, url) {
+            currentGame = { type: 'api', url };
+            gameTitle.textContent = title;
+            gameArea.innerHTML = '<p class="instructions loading">Loading your game... Sit back and relax!</p>';
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+
+            setTimeout(() => {
+                gameArea.innerHTML = `
+                    <p class="instructions">Enjoy ${title}! Click outside to exit, or use replay to restart.</p>
+                    <iframe src="${url}" allowfullscreen></iframe>
+                `;
+                updateScore(10);
+            }, 1000);
+        }
+
+        function openLocalGame(gameId) {
+            currentGame = { type: 'local', id: gameId };
+            gameArea.innerHTML = '<p class="instructions loading">Loading your game... Take a deep breath!</p>';
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+
+            setTimeout(() => {
+                switch(gameId) {
+                    case 1:
+                        loadTicTacToe();
+                        break;
+                    case 2:
+                        loadMemoryMatch();
+                        break;
+                }
+                updateScore(10);
+            }, 1000);
+        }
+
+        function closeGame() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                gameArea.innerHTML = '<p class="instructions">Pick another game to keep relaxing!</p>';
+                currentGame = null;
+            }, 400);
+        }
+
+        function replayGame() {
+            if (currentGame) {
+                if (currentGame.type === 'api' && currentGame.url) {
+                    openGame(gameTitle.textContent, currentGame.url);
+                } else if (currentGame.type === 'local' && currentGame.id) {
+                    openLocalGame(currentGame.id);
+                }
+            }
+        }
+
+        function updateScore(points) {
+            score += points;
+            scoreDisplay.textContent = score;
+            scoreDisplay.parentElement.style.transform = 'scale(1.2)';
+            setTimeout(() => scoreDisplay.parentElement.style.transform = 'scale(1)', 200);
+        }
+
+        // Local Game: Tic-Tac-Toe
+        function loadTicTacToe() {
+            gameTitle.textContent = 'Tic-Tac-Toe';
+            gameArea.innerHTML = '<p class="instructions">Click cells to place X or O. Relax with a win! Earn 10 points per move, 50 for a win.</p>';
+            let board = Array(9).fill('');
+            let currentPlayer = 'X';
+            let gameActive = true;
+
+            const gameBoard = document.createElement('div');
+            gameBoard.className = 'game-board';
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.addEventListener('click', () => {
+                    if (board[i] === '' && gameActive) {
+                        board[i] = currentPlayer;
+                        cell.textContent = currentPlayer;
+                        cell.style.transform = 'scale(0)';
+                        setTimeout(() => cell.style.transform = 'scale(1)', 100);
+                        checkWinner(board, currentPlayer);
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        updateScore(10);
+                    }
+                });
+                gameBoard.appendChild(cell);
+            }
+            gameArea.appendChild(gameBoard);
+
+            function checkWinner(board, player) {
+                const wins = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+                for (let win of wins) {
+                    if (board[win[0]] === player && board[win[1]] === player && board[win[2]] === player) {
+                        gameActive = false;
+                        updateScore(50);
+                        setTimeout(() => alert(`${player} wins! Take a moment to enjoy!`), 300);
+                        return;
+                    }
+                }
+                if (!board.includes('')) {
+                    gameActive = false;
+                    setTimeout(() => alert("It's a tie! Relax and try again!"), 300);
+                }
+            }
+        }
+
+        // Local Game: Memory Match
+        function loadMemoryMatch() {
+            gameTitle.textContent = 'Memory Match';
+            gameArea.innerHTML = '<p class="instructions">Click cards to match pairs. Unwind with each success! Earn 30 points per pair.</p>';
+            const symbols = '🦋🌸🌼🌺'.flatMap(x => [x, x]);
+            symbols.sort(() => 0.5 - Math.random());
+            let flipped = [];
+            let matched = [];
+
+            const gameBoard = document.createElement('div');
+            gameBoard.className = 'game-board';
+            gameBoard.style.gridTemplateColumns = 'repeat(4, 100px)';
+            symbols.forEach((card, i) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.fontSize = '1.5em';
+                cell.addEventListener('click', () => {
+                    if (flipped.length < 2 && !flipped.includes(i) && !matched.includes(i)) {
+                        cell.textContent = card;
+                        cell.style.transform = 'rotateY(180deg)';
+                        setTimeout(() => cell.style.transform = 'rotateY(0deg)', 300);
+                        flipped.push(i);
+                        if (flipped.length === 2) {
+                            if (symbols[flipped[0]] === symbols[flipped[1]]) {
+                                matched.push(...flipped);
+                                updateScore(30);
+                                if (matched.length === symbols.length) {
+                                    setTimeout(() => alert('You matched all! Great job relaxing!'), 300);
+                                }
+                            } else {
+                                setTimeout(() => {
+                                    gameBoard.children[flipped[0]].textContent = '';
+                                    gameBoard.children[flipped[1]].textContent = '';
+                                    gameBoard.children[flipped[0]].style.transform = 'rotateY(180deg)';
+                                    gameBoard.children[flipped[1]].style.transform = 'rotateY(180deg)';
+                                    setTimeout(() => {
+                                        gameBoard.children[flipped[0]].style.transform = 'rotateY(0deg)';
+                                        gameBoard.children[flipped[1]].style.transform = 'rotateY(0deg)';
+                                    }, 300);
+                                }, 1000);
+                            }
+                            flipped = [];
+                        }
+                    }
+                });
+                gameBoard.appendChild(cell);
+            });
+            gameArea.appendChild(gameBoard);
+        }
+
+        // Load games on page load
+        fetchGames();
+
+        window.onclick = function(event) {
+            if (event.target === modal) closeGame();
+        };
+    </script>
 </body>
 </html>
+
+
+
+
+
+

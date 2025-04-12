@@ -47,3 +47,6 @@ def fun_activity(request):
 
 def relaxing_games(request):
     return render(request, 'relaxing_games.html')
+
+def exercise(request):
+    return render(request, 'exercise.html')

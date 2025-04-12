@@ -1,181 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Chatbot</title>
-    <style>
-        body {
-            background-color: #ffe6e6;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .chat-container {
-            width: 90%;
-            max-width: 1100px;
-            height: 500px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .chat-box {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .user-message {
-            background: #4CAF50;
-            color: white;
-            padding: 10px;
-            border-radius: 10px;
-            display: inline-block;
-            margin: 5px 0;
-            width: fit-content;
-        }
-        .bot-message {
-            background: #e0e0e0;
-            color: black;
-            padding: 10px;
-            border-radius: 10px;
-            display: block;
-            margin: 10px 0;
-            width: fit-content;
-            max-width: 80%;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        .bot-sticker {
-            width: 60px;
-            height: 60px;
-            display: block;
-            background-image: url('https://cdn-icons-png.flaticon.com/128/1921/1921064.png'); /* Replace with a sticker URL */
-            background-size: cover;
-            background-position: center;
-            margin: 5px 0;
-        }
-        .input-area {
-            display: flex;
-            align-items: center;
-            padding-top: 10px;
-        }
-        input {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background: #b22222;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        button:hover {
-            background: #a02020;
-        }
-        /* Disclaimer Styling */
-        .disclaimer {
-            font-size: 14px;
-            color: #555;
-            margin-top: 80px;
-            padding: 10px;
-            border-top: 1px solid #ccc;
-            background: #f8f8f8;
-            border-radius: 5px;
-        }
-    </style>
-    <script>
-        function getCSRFToken() {
-            return document.querySelector("[name=csrfmiddlewaretoken]").value;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical Chatbot</title>
+  <style>
+    :root {
+      --bg: #ffe6e6;
+      --bot-color: #e0e0e0;
+      --user-color: #4CAF50;
+      --button-color: #b22222;
+      --button-hover: #a02020;
+    }
 
-        function sendMessage() {
-            var userMessage = document.getElementById("user-input").value;
-            if (!userMessage.trim()) {
-                alert("Please enter a message!");
-                return;
-            }
+    body {
+      background-color: var(--bg);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
 
-            var chatBox = document.getElementById("chat-box");
+    h2 {
+      color: var(--button-color);
+      margin-top: 20px;
+    }
 
-            // Display user message on a new line
-            var userMsgElement = document.createElement("p");
-            userMsgElement.classList.add("user-message");
-            userMsgElement.innerText = userMessage;
-            chatBox.appendChild(userMsgElement);
+    .chat-container {
+      width: 90%;
+      max-width: 1100px;
+      height: 80vh;
+      max-height: 600px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
 
-            // Display bot sticker
-            var botSticker = document.createElement("div");
-            botSticker.classList.add("bot-sticker");
-            chatBox.appendChild(botSticker);
+    .chat-box {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
 
-            fetch("/chatbot/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": getCSRFToken(),
-                },
-                body: "message=" + encodeURIComponent(userMessage),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display bot response as a list
-                var botMsgElement = document.createElement("div");
-                botMsgElement.classList.add("bot-message");
-                
-                var responseList = "<ul>";
-                data.response.split("*").forEach(item => {
-                    if (item.trim() !== "") {
-                        responseList += `<li>${item.trim()}</li>`;
-                    }
-                });
-                responseList += "</ul>";
+    .user-message {
+      background: var(--user-color);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+      margin: 5px 0;
+      width: fit-content;
+      max-width: 90%;
+    }
 
-                botMsgElement.innerHTML = responseList;
-                chatBox.appendChild(botMsgElement);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            })
-            .catch(error => console.error("Error:", error));
+    .bot-message {
+      background: var(--bot-color);
+      color: black;
+      padding: 10px;
+      border-radius: 10px;
+      display: block;
+      margin: 10px 0;
+      width: fit-content;
+      max-width: 90%;
+      font-size: 16px;
+      line-height: 1.5;
+    }
 
-            document.getElementById("user-input").value = "";
-        }
+    .bot-sticker {
+      width: 50px;
+      height: 50px;
+      display: block;
+      background-image: url('https://cdn-icons-png.flaticon.com/128/1921/1921064.png');
+      background-size: cover;
+      background-position: center;
+      margin: 5px 0;
+    }
 
-        // Enable sending message on Enter key press
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("user-input").addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault(); // Prevents form submission
-                    sendMessage();
-                }
-            });
+    .input-area {
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background: var(--button-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: var(--button-hover);
+    }
+
+    .disclaimer {
+      font-size: 14px;
+      color: #555;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 900px;
+      padding: 12px;
+      border-top: 1px solid #ccc;
+      background: #f8f8f8;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .chat-container {
+        height: 85vh;
+        padding: 10px;
+      }
+
+      .input-area {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      input[type="text"] {
+        margin-bottom: 10px;
+        font-size: 15px;
+      }
+
+      button {
+        margin-left: 0;
+        width: 100%;
+        font-size: 15px;
+      }
+    }
+  </style>
+  <script>
+    function getCSRFToken() {
+      return document.querySelector("[name=csrfmiddlewaretoken]").value;
+    }
+
+    function sendMessage() {
+      var userMessage = document.getElementById("user-input").value;
+      if (!userMessage.trim()) {
+        alert("Please enter a message!");
+        return;
+      }
+
+      var chatBox = document.getElementById("chat-box");
+
+      // User message
+      var userMsgElement = document.createElement("p");
+      userMsgElement.classList.add("user-message");
+      userMsgElement.innerText = userMessage;
+      chatBox.appendChild(userMsgElement);
+
+      // Bot sticker
+      var botSticker = document.createElement("div");
+      botSticker.classList.add("bot-sticker");
+      chatBox.appendChild(botSticker);
+
+      fetch("/chatbot/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: "message=" + encodeURIComponent(userMessage),
+      })
+      .then(response => response.json())
+      .then(data => {
+        var botMsgElement = document.createElement("div");
+        botMsgElement.classList.add("bot-message");
+
+        var responseList = "<ul>";
+        data.response.split("*").forEach(item => {
+          if (item.trim() !== "") {
+            responseList += `<li>${item.trim()}</li>`;
+          }
         });
-    </script>
+        responseList += "</ul>";
+
+        botMsgElement.innerHTML = responseList;
+        chatBox.appendChild(botMsgElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      })
+      .catch(error => console.error("Error:", error));
+
+      document.getElementById("user-input").value = "";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("user-input").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          sendMessage();
+        }
+      });
+    });
+  </script>
 </head>
 <body>
-    <h2 style="color: #b22222;">Medical Chatbot</h2>
-    <div class="chat-container">
-        <div id="chat-box" class="chat-box"></div>
-        <form method="post" action="/chatbot/">
-            {% csrf_token %}
-            <div class="input-area">
-                <input type="text" id="user-input" placeholder="Ask me anything about health...">
-                <button type="button" onclick="sendMessage()">Send</button>
-            </div>
-        </form>
-    </div>
-    <div class="disclaimer">
-        <strong>Disclaimer:</strong> This chatbot provides responses generated by the <strong>Gemini API</strong>. The information shared here is for general informational purposes only. For serious health concerns, always consult a qualified medical professional.
-    </div>
+  <h2>Medical Chatbot</h2>
+
+  <div class="chat-container">
+    <div id="chat-box" class="chat-box"></div>
+    <form method="post" action="/chatbot/">
+      {% csrf_token %}
+      <div class="input-area">
+        <input type="text" id="user-input" placeholder="Ask me anything about health..." />
+        <button type="button" onclick="sendMessage()">Send</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This chatbot provides responses generated by the <strong>Gemini API</strong>. The information shared here is for general informational purposes only. For serious health concerns, always consult a qualified medical professional.
+  </div>
 </body>
 </html>
+

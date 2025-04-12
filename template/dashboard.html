@@ -17,23 +17,23 @@
         body {
             background: url('https://images.unsplash.com/photo-1517008729672-a63ddcf53acb?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
         }
 
         .dashboard-container {
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .main-content {
             flex: 1;
-            padding: 50px;
+            padding: 40px;
+            max-width: 1200px;
         }
 
         .header {
-            text-align: center;
             margin-bottom: 30px;
             animation: fadeIn 1.5s ease-in-out;
         }
@@ -47,25 +47,7 @@
 
         .header p {
             color: #f1f1f1;
-        }
-
-        .result-summary {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-summary h2 {
-            font-size: 20px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .result-summary p {
             font-size: 16px;
-            color: #555;
         }
 
         .card-container {
@@ -76,8 +58,8 @@
         }
 
         .card {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             perspective: 1000px;
             position: relative;
         }
@@ -94,6 +76,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.6s;
+            padding: 15px;
         }
 
         .card .front {
@@ -106,7 +89,6 @@
             color: #333;
             transform: rotateY(180deg);
             text-align: center;
-            padding: 20px;
         }
 
         .card:hover .front {
@@ -119,14 +101,12 @@
 
         .pad-recommendation {
             margin-top: 40px;
-            text-align: center;
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 40px auto 0 auto;
             animation: fadeIn 1.5s ease-in-out;
         }
 
@@ -160,71 +140,108 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .card {
+                width: 45%;
+                height: 200px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .pad-recommendation h2 {
+                font-size: 20px;
+            }
+
+            .pad-recommendation p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 100%;
+                height: 180px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .pad-recommendation {
+                padding: 15px;
+            }
+
+            .pad-recommendation h2 {
+                font-size: 18px;
+            }
+
+            .pad-recommendation p {
+                font-size: 15px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="main-content">
             <div class="header">
-                <h1>Welcome, {{result_data.name}}!</h1>
-                    {% comment %} {{ skin_type }} {% endcomment %}
+                <h1>Welcome, {{ result_data.name }}!</h1>
                 <p>Your personalized dashboard</p>
             </div>
 
-            {% comment %} {% if result_data %}
-                <div class="result-summary">
-                    <h2>Your Questionnaire Results</h2>
-                    <p><strong>Duration:</strong> {{ result_data.duration }}</p>
-                    <p><strong>Flow:</strong> {{ result_data.flow }}</p>
-                    <p><strong>Itchiness:</strong> {{ result_data.itchiness }}</p>
-                    <p><strong>Submitted:</strong> {{ result_data.timestamp }}</p>
-                </div> {% endcomment %}
-
-                <div class="card-container">
-                    <div class="card">
-                        <div class="front">
-                            <h3>Precautions</h3>
-                        </div>
-                        <div class="back">
-                            <p id="precautions"></p>
-                        </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="front">
+                        <h3>Precautions</h3>
                     </div>
-
-                    <div class="card">
-                        <div class="front">
-                            <h3>Effects</h3>
-                        </div>
-                        <div class="back">
-                            <p id="effects"></p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="front">
-                            <h3>Medicine</h3>
-                        </div>
-                        <div class="back">
-                            <p id="medicine"></p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="front">
-                            <h3>Sanitary Napkin</h3>
-                        </div>
-                        <div class="back">
-                            <p id="sanitary_napkin"></p>
-                        </div>
+                    <div class="back">
+                        <p id="precautions"></p>
                     </div>
                 </div>
 
-                <div class="pad-recommendation">
-                    <h2>Recommended Sanitary Pad</h2>
-                    <p id="recommended_pad"></p>
+                <div class="card">
+                    <div class="front">
+                        <h3>Effects</h3>
+                    </div>
+                    <div class="back">
+                        <p id="effects"></p>
+                    </div>
                 </div>
-            {% comment %} {% else %}
-                <p>No data available for this skin type yet.</p>
-            {% endif %} {% endcomment %}
+
+                <div class="card">
+                    <div class="front">
+                        <h3>Medicine</h3>
+                    </div>
+                    <div class="back">
+                        <p id="medicine"></p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="front">
+                        <h3>Sanitary Napkin</h3>
+                    </div>
+                    <div class="back">
+                        <p id="sanitary_napkin"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pad-recommendation">
+                <h2>Recommended Sanitary Pad</h2>
+                <p id="recommended_pad"></p>
+            </div>
 
             <a href="{% url 'logout' %}" class="logout-link">Logout</a>
         </div>
@@ -237,35 +254,35 @@
             let precautions, effects, medicine, sanitaryNapkin, padRecommendation;
 
             if (skinType === "sensitive") {
-                precautions = "Be aware that even natural products can cause reactions, so introduce new products carefully and look for pads with no added chemicals.";
+                precautions = "Be aware that even natural products can cause reactions. Choose pads with no added chemicals.";
                 effects = "Scented materials may cause rashes or allergies.";
-                medicine = "Cool compresses to soothe inflamed skin and Over-the-counter hydrocortisone cream (1%) for mild irritation.";
+                medicine = "Cool compresses and hydrocortisone cream (1%) for mild irritation.";
                 sanitaryNapkin = "Carmesi and Nua.";
-                padRecommendation = "A hypoallergenic pad made with organic cotton.";
+                padRecommendation = "Hypoallergenic organic cotton pads.";
             } else if (skinType === "oily") {
                 precautions = "Ensure pads are breathable to reduce excess moisture.";
-                effects = "Excessive moisture can cause bacterial growth and irritation.";
-                medicine = "Gentle cleansing with a mild, fragrance-free cleanser.";
-                sanitaryNapkin = "Whisper Ultra Clean and ultra thin pads.";
-                padRecommendation = "A dry-feel pad with ultra-breathable layers.";
+                effects = "Excessive moisture may cause irritation.";
+                medicine = "Use a mild, fragrance-free cleanser.";
+                sanitaryNapkin = "Whisper Ultra Clean.";
+                padRecommendation = "Dry-feel pad with breathable layers.";
             } else if (skinType === "dry") {
-                precautions = "Avoid overly absorbent pads that can exacerbate dryness.";
-                effects = "Increased risk of chafing and friction.";
-                medicine = "Fragrance-free, hypoallergenic emollients or moisturizers to soothe and hydrate the vulvar area and barrier creams to protect the skin.";
-                sanitaryNapkin = "Stayfree Secure Cottony Soft and Sofy.";
-                padRecommendation = "Any product marketed as having a cottony soft top layer.";
+                precautions = "Avoid overly absorbent pads.";
+                effects = "May increase chafing.";
+                medicine = "Use hypoallergenic moisturizers.";
+                sanitaryNapkin = "Stayfree Secure Cottony Soft.";
+                padRecommendation = "Pads with soft cotton tops.";
             } else if (skinType === "combination") {
-                precautions = "Find a balance of breathability and softness and pay attention to how different areas of vulva react.";
-                effects = "Can experience effects from both dry and oily skin types.";
-                medicine = "Remedies will depend on the specific area of irritation and For dry areas, use emollients; for oily areas, use gentle cleansers.";
-                sanitaryNapkin = "Whisper Ultra Clean and Stayfree Secure.";
-                padRecommendation = "A versatile pad is essential and look for products that offer good absorbency without being overly drying.";
-            } else { // Normal skin type
-                precautions = "Choose comfortable, breathable pads and maintain good hygiene practices.";
-                effects = "Still susceptible to irritation from prolonged pad use or poor hygiene.";
-                medicine = "Generally, good hygiene practices prevent most issues and For mild irritation, cool compresses or gentle cleansers may suffice.";
-                sanitaryNapkin = "Whisper (any line) and Stayfree (any line).";
-                padRecommendation = "Fragrance-free pad should be suitable and choose the right absorbency for your flow.";
+                precautions = "Balance breathability and softness.";
+                effects = "May have both dry and oily effects.";
+                medicine = "Use emollients for dry, cleansers for oily.";
+                sanitaryNapkin = "Whisper Ultra Clean & Stayfree Secure.";
+                padRecommendation = "Versatile pad with balanced absorbency.";
+            } else {
+                precautions = "Maintain good hygiene. Choose breathable pads.";
+                effects = "Irritation may occur from poor hygiene.";
+                medicine = "Gentle cleanser or cool compress.";
+                sanitaryNapkin = "Any from Whisper or Stayfree.";
+                padRecommendation = "Fragrance-free pad with proper absorbency.";
             }
 
             document.getElementById("precautions").textContent = precautions || "No data available.";
