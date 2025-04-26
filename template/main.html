@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .title {
+      font-size: 60px;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .title::after {
+      content: '';
+      width: 100%;
+      height: 4px;
+      background: white;
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    .title:hover {
+      transform: scale(1.05);
+      color: #00ffff;
+    }
+
+    .title:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: float 10s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="title" onclick="goToIndex()">Stree Seva Satkar</div>
+
+<div class="particles" id="particles"></div>
+
+<script>
+  function goToIndex() {
+    window.location.href ="{% url '/index/' %}"; // or your site's main page
+  }
+
+  // Create animated particles
+  const particlesContainer = document.getElementById("particles");
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.animationDuration = `${8 + Math.random() * 5}s`;
+    particle.style.animationDelay = `${Math.random() * 10}s`;
+    particlesContainer.appendChild(particle);
+  }
+</script>
+
+</body>
+</html>

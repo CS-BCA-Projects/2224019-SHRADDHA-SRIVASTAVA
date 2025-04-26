@@ -6,8 +6,14 @@ from .models import Contact  # Import the Contact model
 from django.conf import settings
 
 
+# def main_page(request):
+#     return render(request, 'main.html')
+
+
+
 def index(request):
-    return render(request, "index.html")
+    return render(request, 'index.html')
+
 
 def contact(request):
     """Handles the contact form submission and stores data in MongoDB."""
